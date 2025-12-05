@@ -1,10 +1,12 @@
 import React from 'react'
 import Hero from '../ui/Hero'
+import CompanyBanner from '../ui/CompanyBanner'
 
 const Landing = () => {
   return (
       <div className='w-full'>
-          <Hero />
+      <Hero />
+      <CompanyBanner />
     </div>
   )
 }

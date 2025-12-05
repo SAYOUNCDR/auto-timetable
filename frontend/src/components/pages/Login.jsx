@@ -24,9 +24,7 @@ const Login = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-      <div className="relative w-full max-w-md mx-4 bg-white rounded-lg shadow-lg shadow-yellow-500/20 overflow-hidden">
-       
-
+      <div className="relative w-full max-w-md mx-4 bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Close Button */}
         <button
           onClick={onClose}
