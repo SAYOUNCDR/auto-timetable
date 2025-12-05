@@ -7,7 +7,7 @@ const Navbar = ({ onLoginClick }) => {
         <div className="text-black text-lg font-bold tracking-wide">
           Auto Gen
         </div>
-        <Button onClick={onLoginClick} />
+        <Button onClick={onLoginClick}> Login</Button>
       </div>
     </nav>
   );
