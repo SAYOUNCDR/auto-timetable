@@ -25,5 +25,9 @@ app.get("/", (req, res) => {
   res.send("Auto Timetable API is running...");
 });
 
+app.post("/api/test", (req, res) => {
+  const { message } = req.body;
+  res.json({ receivedMessage: message });
+});
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

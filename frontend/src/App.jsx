@@ -9,7 +9,7 @@ function App() {
   return (
     <div>
       <Navbar onLoginClick={() => setIsLoginOpen(true)} />
-      <div className="min-h-screen max-w-5xl mx-auto flex items-center flex-col py-5 border border-gray-300 text-black pt-20">
+      <div className="min-h-screen max-w-5xl mx-auto flex items-center flex-col py-5 text-black pt-20">
         <Landing />
       </div>
       <Login isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
