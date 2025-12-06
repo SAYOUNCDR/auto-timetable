@@ -15,6 +15,7 @@ const Hero = () => {
 
         <Button className='mt-10 mx-auto block'>Get Started</Button>
       </div>
+      
       </div>
   )
 }

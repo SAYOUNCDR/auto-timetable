@@ -10,7 +10,7 @@ function App() {
   return (
     <div>
       <Navbar onLoginClick={() => setIsLoginOpen(true)} />
-      <div className="min-h-screen max-w-5xl mx-auto flex items-center flex-col py-5 text-black pt-20">
+      <div className="min-h-screen max-w-7xl mx-auto flex items-center flex-col py-5 text-black pt-20">
         <Landing />
       </div>
       <Footer />
