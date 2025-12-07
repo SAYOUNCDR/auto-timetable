@@ -20,7 +20,7 @@ const studentSchema = new Schema(
       default: "student",
     },
     batch: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Batch",
       required: true,
     },

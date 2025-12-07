@@ -25,7 +25,7 @@ const facultySchema = new Schema(
     },
     qualifiedSubjects: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Subject",
       },
     ],
