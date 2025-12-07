@@ -94,12 +94,20 @@ exports.createFaculty = async (req, res) => {
       unavailableTimeSlots,
     });
 
-    res.status(201).json(faculty);
+    const safeFaculty = {
+      _id: faculty._id,
+      name: faculty.name,
+      email: faculty.email,
+      maxClassesPerDay: faculty.maxClassesPerDay,
+      qualifiedSubjects: faculty.qualifiedSubjects,
+      unavailableTimeSlots: faculty.unavailableTimeSlots,
+      role: faculty.role,
+    };
+    res.status(201).json(safeFaculty);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
-
 
 // 5. Create student
 exports.createStudent = async (req, res) => {
@@ -117,7 +125,14 @@ exports.createStudent = async (req, res) => {
       batch: batch._id,
     });
 
-    res.status(201).json(student);
+    const safeStudent = {
+      _id: student._id,
+      name: student.name,
+      email: student.email,
+      batch: student.batch,
+      role: student.role,
+    };
+    res.status(201).json(safeStudent);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
