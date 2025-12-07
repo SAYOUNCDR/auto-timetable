@@ -21,5 +21,5 @@ const classSchema = new Schema(
   { timestamps: true }
 );
 
-const Class = model("Class", classSchema);
-module.exports = Class;
+const Classroom = model("Classroom", classSchema);
+module.exports = Classroom;
