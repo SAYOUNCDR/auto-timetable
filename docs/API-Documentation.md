@@ -13,6 +13,7 @@
 - [Frontend Structure](#frontend-structure)
 - [Environment Variables](#environment-variables)
 - [Usage Guide](#usage-guide)
+- [Data Seeding Guide (Postman)](#data-seeding-guide-postman)
 - [Contributing](#contributing)
 
 ---
@@ -125,32 +126,32 @@ The **TimeTable Management & Generation System** is an intelligent web applicati
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                         Frontend (React)                     │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
-│  │  Admin   │  │ Faculty  │  │ Student  │  │ Landing  │   │
-│  │  Panel   │  │   View   │  │   View   │  │   Page   │   │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘   │
+│                         Frontend (React)                    │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐     │
+│  │  Admin   │  │ Faculty  │  │ Student  │  │ Landing  │     │
+│  │  Panel   │  │   View   │  │   View   │  │   Page   │     │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘     │
 └─────────────────────────┬───────────────────────────────────┘
                           │ HTTP/REST
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                   Backend (Express.js)                       │
+│                   Backend (Express.js)                      │
 │  ┌────────────────────────────────────────────────────┐     │
 │  │                  Route Layer                       │     │
-│  │  /api/auth  /api/admin  /api/dev  /api/timetable │     │
+│  │  /api/auth  /api/admin  /api/dev  /api/timetable   │     │
 │  └────────────────────┬───────────────────────────────┘     │
-│                       │                                      │
+│                       │                                     │
 │  ┌────────────────────▼───────────────────────────────┐     │
 │  │              Controller Layer                      │     │
-│  │  Authentication  │  Admin Logic  │  Timetable     │     │
+│  │  Authentication  │  Admin Logic  │  Timetable      │     │
 │  └────────────────────┬───────────────────────────────┘     │
-│                       │                                      │
+│                       │                                     │
 │  ┌────────────────────▼───────────────────────────────┐     │
 │  │               Model Layer (Mongoose)               │     │
-│  │  Admin │ Faculty │ Student │ Batch │ Subject      │     │
+│  │  Admin │ Faculty │ Student │ Batch │ Subject       │     │
 │  │  Classroom │ Timetable                             │     │
 │  └────────────────────┬───────────────────────────────┘     │
-└───────────────────────┼──────────────────────────────────────┘
+└───────────────────────┼─────────────────────────────────────┘
                         │
                         ▼
               ┌─────────────────┐           ┌──────────────────┐
@@ -1906,6 +1907,160 @@ SOFTWARE.
 - [ ] GraphQL API option
 - [ ] Lazy loading for large datasets
 - [ ] WebSocket for real-time updates
+
+---
+
+## 🧪 Data Seeding Guide (Postman)
+
+To populate the database with initial test data, you can use Postman to send requests to the API endpoints. Follow the order below to ensure referential integrity.
+
+### Prerequisites
+
+- Ensure the backend server is running at `http://localhost:5000`.
+- Login as Admin to get the JWT Token.
+- Set the `Authorization` header in Postman: `Bearer <YOUR_ADMIN_JWT_TOKEN>`.
+
+### Step 1: Classrooms
+
+**Endpoint:** `POST http://localhost:5000/api/admin/classroom`
+
+```json
+[
+  { "className": "LH_MAIN_AUD", "capacity": 120, "type": "Classroom" },
+  { "className": "R_201", "capacity": 60, "type": "Classroom" },
+  { "className": "R_202", "capacity": 60, "type": "Classroom" },
+  { "className": "R_203", "capacity": 45, "type": "Classroom" },
+  { "className": "LAB_COMP_A", "capacity": 60, "type": "Laboratory" },
+  { "className": "LAB_COMP_B", "capacity": 40, "type": "Laboratory" }
+]
+```
+
+### Step 2: Batches
+
+**Endpoint:** `POST http://localhost:5000/api/admin/batch`
+
+```json
+[
+  { "batchName": "Year 1 - Sec A", "strength": 55, "yearOfStudy": 1 },
+  { "batchName": "Year 1 - Sec B", "strength": 58, "yearOfStudy": 1 },
+  { "batchName": "Year 2 - Sec A", "strength": 50, "yearOfStudy": 2 },
+  { "batchName": "Year 2 - Sec B", "strength": 52, "yearOfStudy": 2 },
+  {
+    "batchName": "Year 3 - AI Specialization",
+    "strength": 40,
+    "yearOfStudy": 3
+  },
+  {
+    "batchName": "Year 3 - Web Specialization",
+    "strength": 45,
+    "yearOfStudy": 3
+  }
+]
+```
+
+### Step 3: Subjects
+
+**Endpoint:** `POST http://localhost:5000/api/admin/subject`
+**Note:** You must replace `<BATCH_ID>` with the actual ID from the created batches.
+
+_(Example for Year 1 - Sec A)_
+
+```json
+[
+  {
+    "subjectCode": "MATH_101_Y1A",
+    "subjectName": "Calculus I",
+    "sessionsPerWeek": 4,
+    "type": "Theory",
+    "requiredRoomType": "Classroom",
+    "batchName": "Year 1 - Sec A"
+  },
+  {
+    "subjectCode": "CS_101_Y1A",
+    "subjectName": "Intro to CS",
+    "sessionsPerWeek": 3,
+    "type": "Theory",
+    "requiredRoomType": "Classroom",
+    "batchName": "Year 1 - Sec A"
+  },
+  {
+    "subjectCode": "CS_101_LAB_Y1A",
+    "subjectName": "Intro CS Lab",
+    "sessionsPerWeek": 1,
+    "type": "Practical",
+    "requiredRoomType": "Laboratory",
+    "batchName": "Year 1 - Sec A"
+  },
+  {
+    "subjectCode": "PYTHON_102_Y1A",
+    "subjectName": "Python Basics",
+    "sessionsPerWeek": 2,
+    "type": "Theory",
+    "requiredRoomType": "Classroom",
+    "batchName": "Year 1 - Sec A"
+  }
+]
+```
+
+_(Repeat for other batches using their respective subjects)_
+
+### Step 4: Faculty
+
+**Endpoint:** `POST http://localhost:5000/api/admin/faculty`
+**Note:** The system will automatically link `qualifiedSubjectCodes` to Subject IDs.
+
+```json
+[
+  {
+    "name": "Dr. Alan (Math/Logic)",
+    "email": "t_alan@university.edu",
+    "password": "password123",
+    "maxClassesPerDay": 6,
+    "qualifiedSubjectCodes": [
+      "MATH_101_Y1A",
+      "MATH_101_Y1B",
+      "DISCRETE_MATH_Y2A",
+      "DISCRETE_MATH_Y2B"
+    ],
+    "unavailableTimeSlots": []
+  },
+  {
+    "name": "Prof. Grace (Core CS)",
+    "email": "t_grace@university.edu",
+    "password": "password123",
+    "maxClassesPerDay": 6,
+    "qualifiedSubjectCodes": [
+      "CS_101_Y1A",
+      "CS_101_LAB_Y1A",
+      "CS_101_Y1B",
+      "CS_101_LAB_Y1B",
+      "DSA_201_Y2B"
+    ],
+    "unavailableTimeSlots": [
+      [0, 0],
+      [0, 1],
+      [4, 6],
+      [4, 7]
+    ]
+  }
+]
+```
+
+### Step 5: Students
+
+**Endpoint:** `POST http://localhost:5000/api/admin/student`
+**Note:** The system will automatically link `batchName` to Batch IDs.
+
+```json
+[
+  {
+    "name": "Student 1 - Year 1 Sec A",
+    "email": "student.y1a.1@university.edu",
+    "password": "password123",
+    "batchName": "Year 1 - Sec A"
+  }
+]
+```
 
 ---
 
