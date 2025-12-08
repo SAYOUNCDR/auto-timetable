@@ -1,0 +1,110 @@
+{
+  "metadata": {
+    "days_per_week": 5,
+    "slots_per_day": 8,
+    "slot_duration_min": 60
+  },
+
+  "resources": {
+    "rooms": [
+      { "id": "LH_101", "capacity": 80, "type": "lecture_hall" },
+      { "id": "LH_102", "capacity": 60, "type": "lecture_hall" },
+      { "id": "LAB_A",  "capacity": 35, "type": "computer_lab" },
+      { "id": "LAB_B",  "capacity": 30, "type": "computer_lab" }
+    ],
+
+    "teachers": [
+      {
+        "id": "T_ARORA",
+        "name": "Dr. Arora",
+        "qualified_courses": ["MATH101", "MATH201"],
+        "unavailable_slots": [[1, 0], [3, 5]]
+      },
+      {
+        "id": "T_RAO",
+        "name": "Prof. Rao",
+        "qualified_courses": ["CS101", "CS101_LAB"],
+        "unavailable_slots": [[2, 7]]
+      },
+      {
+        "id": "T_KHAN",
+        "name": "Ms. Khan",
+        "qualified_courses": ["ENG101"],
+        "unavailable_slots": []
+      }
+    ],
+
+    "courses": [
+      { "id": "MATH101", "name": "Calculus I" },
+      { "id": "MATH201", "name": "Advanced Algebra" },
+      { "id": "CS101", "name": "Programming Basics" },
+      { "id": "CS101_LAB", "name": "Programming Lab" },
+      { "id": "ENG101", "name": "English Communication" }
+    ],
+
+    "groups": [
+      { "id": "G_A", "name": "Year 1 - Sec A", "student_count": 55 },
+      { "id": "G_B", "name": "Year 1 - Sec B", "student_count": 48 }
+    ]
+  },
+
+  "requirements": [
+    {
+      "group_id": "G_A",
+      "course_id": "MATH101",
+      "teacher_id": "T_ARORA",
+      "sessions_per_week": 3,
+      "duration_slots": 1,
+      "requires_lab": false
+    },
+    {
+      "group_id": "G_A",
+      "course_id": "CS101",
+      "teacher_id": "T_RAO",
+      "sessions_per_week": 2,
+      "duration_slots": 1,
+      "requires_lab": false
+    },
+    {
+      "group_id": "G_A",
+      "course_id": "CS101_LAB",
+      "teacher_id": "T_RAO",
+      "sessions_per_week": 1,
+      "duration_slots": 3,
+      "requires_lab": true
+    },
+    {
+      "group_id": "G_A",
+      "course_id": "ENG101",
+      "teacher_id": "T_KHAN",
+      "sessions_per_week": 2,
+      "duration_slots": 1,
+      "requires_lab": false
+    },
+
+    {
+      "group_id": "G_B",
+      "course_id": "MATH101",
+      "teacher_id": "T_ARORA",
+      "sessions_per_week": 2,
+      "duration_slots": 1,
+      "requires_lab": false
+    },
+    {
+      "group_id": "G_B",
+      "course_id": "CS101",
+      "teacher_id": "T_RAO",
+      "sessions_per_week": 2,
+      "duration_slots": 1,
+      "requires_lab": false
+    },
+    {
+      "group_id": "G_B",
+      "course_id": "CS101_LAB",
+      "teacher_id": "T_RAO",
+      "sessions_per_week": 1,
+      "duration_slots": 3,
+      "requires_lab": true
+    }
+  ]
+}

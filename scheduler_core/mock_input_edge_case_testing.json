@@ -1,0 +1,131 @@
+{
+  "metadata": {
+    "days_per_week": 5,
+    "slots_per_day": 8,
+    "slot_duration_min": 60
+  },
+  "resources": {
+    "rooms": [
+      { "id": "LH_MAIN_AUD", "capacity": 120, "type": "lecture_hall" },
+      { "id": "R_201", "capacity": 60, "type": "lecture_hall" },
+      { "id": "R_202", "capacity": 60, "type": "lecture_hall" },
+      { "id": "R_203", "capacity": 45, "type": "lecture_hall" },
+      { "id": "LAB_COMP_A", "capacity": 60, "type": "computer_lab" },
+      { "id": "LAB_COMP_B", "capacity": 40, "type": "computer_lab" }
+    ],
+    "teachers": [
+      {
+        "id": "T_ALAN",
+        "name": "Dr. Alan (Math/Logic)",
+        "qualified_courses": ["MATH_101", "DISCRETE_MATH"],
+        "unavailable_slots": []
+      },
+      {
+        "id": "T_GRACE",
+        "name": "Prof. Grace (Core CS)",
+        "qualified_courses": ["CS_101", "CS_101_LAB", "DSA_201"],
+        "unavailable_slots": [[0,0], [0,1], [4,6], [4,7]]
+      },
+      {
+        "id": "T_LINUS",
+        "name": "Prof. Linus (OS/Sys)",
+        "qualified_courses": ["OS_301", "OS_301_LAB", "DSA_201", "DSA_201_LAB"],
+        "unavailable_slots": [[2,0], [2,1], [2,2], [2,3]]
+      },
+      {
+        "id": "T_ADA",
+        "name": "Dr. Ada (AI/ML)",
+        "qualified_courses": ["AI_401", "AI_401_LAB", "PYTHON_102"],
+        "unavailable_slots": [[1,0], [3,0], [4,0]]
+      },
+      {
+        "id": "T_TIM",
+        "name": "Mr. Tim (Web - Visiting)",
+        "qualified_courses": ["WEB_302", "WEB_302_LAB"],
+        "unavailable_slots": [
+          [0,0], [0,1], [0,2], [0,3],
+          [1,0], [1,1], [1,2], [1,3],
+          [2,0], [2,1], [2,2], [2,3]
+        ]
+      },
+      {
+        "id": "T_BOB",
+        "name": "Prof. Bob (Database)",
+        "qualified_courses": ["DB_202", "DB_202_LAB"],
+        "unavailable_slots": []
+      },
+      {
+        "id": "T_SARAH",
+        "name": "Sarah (Teaching Asst)",
+        "qualified_courses": ["CS_101_LAB", "DSA_201_LAB", "PYTHON_102_LAB"],
+        "unavailable_slots": [[0,4], [0,5], [0,6], [0,7]]
+      },
+      {
+        "id": "T_KEN",
+        "name": "Ken (Networks)",
+        "qualified_courses": ["NET_305"],
+        "unavailable_slots": []
+      }
+    ],
+    "courses": [
+      { "id": "MATH_101", "name": "Calculus I" },
+      { "id": "DISCRETE_MATH", "name": "Discrete Structures" },
+      { "id": "CS_101", "name": "Intro to CS" },
+      { "id": "CS_101_LAB", "name": "Intro CS Lab" },
+      { "id": "PYTHON_102", "name": "Python Basics" },
+      { "id": "PYTHON_102_LAB", "name": "Python Lab" },
+      { "id": "DSA_201", "name": "Data Structures & Algo" },
+      { "id": "DSA_201_LAB", "name": "DSA Lab" },
+      { "id": "DB_202", "name": "DBMS" },
+      { "id": "DB_202_LAB", "name": "DBMS Lab" },
+      { "id": "OS_301", "name": "Operating Systems" },
+      { "id": "OS_301_LAB", "name": "Linux Kernel Lab" },
+      { "id": "WEB_302", "name": "Full Stack Dev" },
+      { "id": "WEB_302_LAB", "name": "React/Node Lab" },
+      { "id": "AI_401", "name": "Artificial Intelligence" },
+      { "id": "AI_401_LAB", "name": "Neural Networks Lab" },
+      { "id": "NET_305", "name": "Computer Networks" }
+    ],
+    "groups": [
+      { "id": "Y1_SEC_A", "name": "Year 1 - Sec A", "student_count": 55 },
+      { "id": "Y1_SEC_B", "name": "Year 1 - Sec B", "student_count": 58 },
+      { "id": "Y2_SEC_A", "name": "Year 2 - Sec A", "student_count": 50 },
+      { "id": "Y2_SEC_B", "name": "Year 2 - Sec B", "student_count": 52 },
+      { "id": "Y3_SEC_AI", "name": "Year 3 - AI Specialization", "student_count": 40 },
+      { "id": "Y3_SEC_WEB", "name": "Year 3 - Web Specialization", "student_count": 45 }
+    ]
+  },
+  "requirements": [
+    
+    { "group_id": "Y1_SEC_A", "course_id": "MATH_101", "teacher_id": "T_ALAN", "sessions_per_week": 4, "duration_slots": 1, "requires_lab": false },
+    { "group_id": "Y1_SEC_A", "course_id": "CS_101", "teacher_id": "T_GRACE", "sessions_per_week": 3, "duration_slots": 1, "requires_lab": false },
+    { "group_id": "Y1_SEC_A", "course_id": "CS_101_LAB", "teacher_id": "T_SARAH", "sessions_per_week": 1, "duration_slots": 3, "requires_lab": true },
+    { "group_id": "Y1_SEC_A", "course_id": "PYTHON_102", "teacher_id": "T_ADA", "sessions_per_week": 2, "duration_slots": 1, "requires_lab": false },
+
+    { "group_id": "Y1_SEC_B", "course_id": "MATH_101", "teacher_id": "T_ALAN", "sessions_per_week": 4, "duration_slots": 1, "requires_lab": false },
+    { "group_id": "Y1_SEC_B", "course_id": "CS_101", "teacher_id": "T_GRACE", "sessions_per_week": 3, "duration_slots": 1, "requires_lab": false },
+    { "group_id": "Y1_SEC_B", "course_id": "CS_101_LAB", "teacher_id": "T_SARAH", "sessions_per_week": 1, "duration_slots": 3, "requires_lab": true },
+    { "group_id": "Y1_SEC_B", "course_id": "PYTHON_102", "teacher_id": "T_ADA", "sessions_per_week": 2, "duration_slots": 1, "requires_lab": false },
+
+    { "group_id": "Y2_SEC_A", "course_id": "DSA_201", "teacher_id": "T_LINUS", "sessions_per_week": 3, "duration_slots": 1, "requires_lab": false },
+    { "group_id": "Y2_SEC_A", "course_id": "DSA_201_LAB", "teacher_id": "T_LINUS", "sessions_per_week": 1, "duration_slots": 3, "requires_lab": true },
+    { "group_id": "Y2_SEC_A", "course_id": "DB_202", "teacher_id": "T_BOB", "sessions_per_week": 3, "duration_slots": 1, "requires_lab": false },
+    { "group_id": "Y2_SEC_A", "course_id": "DB_202_LAB", "teacher_id": "T_BOB", "sessions_per_week": 1, "duration_slots": 2, "requires_lab": true },
+    { "group_id": "Y2_SEC_A", "course_id": "DISCRETE_MATH", "teacher_id": "T_ALAN", "sessions_per_week": 3, "duration_slots": 1, "requires_lab": false },
+
+    { "group_id": "Y2_SEC_B", "course_id": "DSA_201", "teacher_id": "T_GRACE", "sessions_per_week": 3, "duration_slots": 1, "requires_lab": false },
+    { "group_id": "Y2_SEC_B", "course_id": "DSA_201_LAB", "teacher_id": "T_SARAH", "sessions_per_week": 1, "duration_slots": 3, "requires_lab": true },
+    { "group_id": "Y2_SEC_B", "course_id": "DB_202", "teacher_id": "T_BOB", "sessions_per_week": 3, "duration_slots": 1, "requires_lab": false },
+    { "group_id": "Y2_SEC_B", "course_id": "DB_202_LAB", "teacher_id": "T_BOB", "sessions_per_week": 1, "duration_slots": 2, "requires_lab": true },
+    { "group_id": "Y2_SEC_B", "course_id": "DISCRETE_MATH", "teacher_id": "T_ALAN", "sessions_per_week": 3, "duration_slots": 1, "requires_lab": false },
+
+    { "group_id": "Y3_SEC_AI", "course_id": "AI_401", "teacher_id": "T_ADA", "sessions_per_week": 3, "duration_slots": 1, "requires_lab": false },
+    { "group_id": "Y3_SEC_AI", "course_id": "AI_401_LAB", "teacher_id": "T_ADA", "sessions_per_week": 1, "duration_slots": 3, "requires_lab": true },
+    { "group_id": "Y3_SEC_AI", "course_id": "OS_301", "teacher_id": "T_LINUS", "sessions_per_week": 3, "duration_slots": 1, "requires_lab": false },
+    { "group_id": "Y3_SEC_AI", "course_id": "OS_301_LAB", "teacher_id": "T_LINUS", "sessions_per_week": 1, "duration_slots": 2, "requires_lab": true },
+
+    { "group_id": "Y3_SEC_WEB", "course_id": "WEB_302", "teacher_id": "T_TIM", "sessions_per_week": 2, "duration_slots": 2, "requires_lab": false },
+    { "group_id": "Y3_SEC_WEB", "course_id": "WEB_302_LAB", "teacher_id": "T_TIM", "sessions_per_week": 1, "duration_slots": 3, "requires_lab": true },
+    { "group_id": "Y3_SEC_WEB", "course_id": "NET_305", "teacher_id": "T_KEN", "sessions_per_week": 4, "duration_slots": 1, "requires_lab": false }
+  ]
+}
