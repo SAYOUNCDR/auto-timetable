@@ -1,0 +1,658 @@
+{
+    "What are these?": "These are sample payloads to insert mock data into the MongoDB database using Postman.",
+    "INSTRUCTIONS": "Use these payloads to manually insert data via Postman. Insert in this order: 1. Classrooms, 2. Batches, 3. Subjects, 4. Faculty, 5. Students",
+    "CLASSROOMS": {
+        "endpoint": "POST http://localhost:5000/api/admin/classroom",
+        "headers": {
+            "Authorization": "Bearer <YOUR_ADMIN_JWT_TOKEN>",
+            "Content-Type": "application/json"
+        },
+        "data": [
+            {
+                "className": "LH_MAIN_AUD",
+                "capacity": 120,
+                "type": "Classroom"
+            },
+            {
+                "className": "R_201",
+                "capacity": 60,
+                "type": "Classroom"
+            },
+            {
+                "className": "R_202",
+                "capacity": 60,
+                "type": "Classroom"
+            },
+            {
+                "className": "R_203",
+                "capacity": 45,
+                "type": "Classroom"
+            },
+            {
+                "className": "LAB_COMP_A",
+                "capacity": 60,
+                "type": "Laboratory"
+            },
+            {
+                "className": "LAB_COMP_B",
+                "capacity": 40,
+                "type": "Laboratory"
+            }
+        ]
+    },
+    "BATCHES": {
+        "endpoint": "POST http://localhost:5000/api/admin/batch",
+        "headers": {
+            "Authorization": "Bearer <YOUR_ADMIN_JWT_TOKEN>",
+            "Content-Type": "application/json"
+        },
+        "note": "Create batches first, then add subjects to them later",
+        "data": [
+            {
+                "batchName": "Year 1 - Sec A",
+                "strength": 55,
+                "yearOfStudy": 1
+            },
+            {
+                "batchName": "Year 1 - Sec B",
+                "strength": 58,
+                "yearOfStudy": 1
+            },
+            {
+                "batchName": "Year 2 - Sec A",
+                "strength": 50,
+                "yearOfStudy": 2
+            },
+            {
+                "batchName": "Year 2 - Sec B",
+                "strength": 52,
+                "yearOfStudy": 2
+            },
+            {
+                "batchName": "Year 3 - AI Specialization",
+                "strength": 40,
+                "yearOfStudy": 3
+            },
+            {
+                "batchName": "Year 3 - Web Specialization",
+                "strength": 45,
+                "yearOfStudy": 3
+            }
+        ]
+    },
+    "SUBJECTS_Y1_SEC_A": {
+        "endpoint": "POST http://localhost:5000/api/admin/subject",
+        "headers": {
+            "Authorization": "Bearer <YOUR_ADMIN_JWT_TOKEN>",
+            "Content-Type": "application/json"
+        },
+        "note": "Replace <BATCH_ID> with the actual _id of 'Year 1 - Sec A' batch from MongoDB",
+        "data": [
+            {
+                "subjectCode": "MATH_101_Y1A",
+                "subjectName": "Calculus I",
+                "sessionsPerWeek": 4,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 1 - Sec A"
+            },
+            {
+                "subjectCode": "CS_101_Y1A",
+                "subjectName": "Intro to CS",
+                "sessionsPerWeek": 3,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 1 - Sec A"
+            },
+            {
+                "subjectCode": "CS_101_LAB_Y1A",
+                "subjectName": "Intro CS Lab",
+                "sessionsPerWeek": 1,
+                "type": "Practical",
+                "requiredRoomType": "Laboratory",
+                "batchName": "Year 1 - Sec A"
+            },
+            {
+                "subjectCode": "PYTHON_102_Y1A",
+                "subjectName": "Python Basics",
+                "sessionsPerWeek": 2,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 1 - Sec A"
+            }
+        ]
+    },
+    "SUBJECTS_Y1_SEC_B": {
+        "endpoint": "POST http://localhost:5000/api/admin/subject",
+        "note": "Replace <BATCH_ID> with the actual _id of 'Year 1 - Sec B' batch",
+        "data": [
+            {
+                "subjectCode": "MATH_101_Y1B",
+                "subjectName": "Calculus I",
+                "sessionsPerWeek": 4,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 1 - Sec B"
+            },
+            {
+                "subjectCode": "CS_101_Y1B",
+                "subjectName": "Intro to CS",
+                "sessionsPerWeek": 3,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 1 - Sec B"
+            },
+            {
+                "subjectCode": "CS_101_LAB_Y1B",
+                "subjectName": "Intro CS Lab",
+                "sessionsPerWeek": 1,
+                "type": "Practical",
+                "requiredRoomType": "Laboratory",
+                "batchName": "Year 1 - Sec B"
+            },
+            {
+                "subjectCode": "PYTHON_102_Y1B",
+                "subjectName": "Python Basics",
+                "sessionsPerWeek": 2,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 1 - Sec B"
+            }
+        ]
+    },
+    "SUBJECTS_Y2_SEC_A": {
+        "endpoint": "POST http://localhost:5000/api/admin/subject",
+        "note": "Replace <BATCH_ID> with the actual _id of 'Year 2 - Sec A' batch",
+        "data": [
+            {
+                "subjectCode": "DSA_201_Y2A",
+                "subjectName": "Data Structures & Algo",
+                "sessionsPerWeek": 3,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 2 - Sec A"
+            },
+            {
+                "subjectCode": "DSA_201_LAB_Y2A",
+                "subjectName": "DSA Lab",
+                "sessionsPerWeek": 1,
+                "type": "Practical",
+                "requiredRoomType": "Laboratory",
+                "batchName": "Year 2 - Sec A"
+            },
+            {
+                "subjectCode": "DB_202_Y2A",
+                "subjectName": "DBMS",
+                "sessionsPerWeek": 3,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 2 - Sec A"
+            },
+            {
+                "subjectCode": "DB_202_LAB_Y2A",
+                "subjectName": "DBMS Lab",
+                "sessionsPerWeek": 1,
+                "type": "Practical",
+                "requiredRoomType": "Laboratory",
+                "batchName": "Year 2 - Sec A"
+            },
+            {
+                "subjectCode": "DISCRETE_MATH_Y2A",
+                "subjectName": "Discrete Structures",
+                "sessionsPerWeek": 3,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 2 - Sec A"
+            }
+        ]
+    },
+    "SUBJECTS_Y2_SEC_B": {
+        "endpoint": "POST http://localhost:5000/api/admin/subject",
+        "note": "Replace <BATCH_ID> with the actual _id of 'Year 2 - Sec B' batch",
+        "data": [
+            {
+                "subjectCode": "DSA_201_Y2B",
+                "subjectName": "Data Structures & Algo",
+                "sessionsPerWeek": 3,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 2 - Sec B"
+            },
+            {
+                "subjectCode": "DSA_201_LAB_Y2B",
+                "subjectName": "DSA Lab",
+                "sessionsPerWeek": 1,
+                "type": "Practical",
+                "requiredRoomType": "Laboratory",
+                "batchName": "Year 2 - Sec B"
+            },
+            {
+                "subjectCode": "DB_202_Y2B",
+                "subjectName": "DBMS",
+                "sessionsPerWeek": 3,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 2 - Sec B"
+            },
+            {
+                "subjectCode": "DB_202_LAB_Y2B",
+                "subjectName": "DBMS Lab",
+                "sessionsPerWeek": 1,
+                "type": "Practical",
+                "requiredRoomType": "Laboratory",
+                "batchName": "Year 2 - Sec B"
+            },
+            {
+                "subjectCode": "DISCRETE_MATH_Y2B",
+                "subjectName": "Discrete Structures",
+                "sessionsPerWeek": 3,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 2 - Sec B"
+            }
+        ]
+    },
+    "SUBJECTS_Y3_AI": {
+        "endpoint": "POST http://localhost:5000/api/admin/subject",
+        "note": "Replace <BATCH_ID> with the actual _id of 'Year 3 - AI Specialization' batch",
+        "data": [
+            {
+                "subjectCode": "AI_401_Y3AI",
+                "subjectName": "Artificial Intelligence",
+                "sessionsPerWeek": 3,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 3 - AI Specialization"
+            },
+            {
+                "subjectCode": "AI_401_LAB_Y3AI",
+                "subjectName": "Neural Networks Lab",
+                "sessionsPerWeek": 1,
+                "type": "Practical",
+                "requiredRoomType": "Laboratory",
+                "batchName": "Year 3 - AI Specialization"
+            },
+            {
+                "subjectCode": "OS_301_Y3AI",
+                "subjectName": "Operating Systems",
+                "sessionsPerWeek": 3,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 3 - AI Specialization"
+            },
+            {
+                "subjectCode": "OS_301_LAB_Y3AI",
+                "subjectName": "Linux Kernel Lab",
+                "sessionsPerWeek": 1,
+                "type": "Practical",
+                "requiredRoomType": "Laboratory",
+                "batchName": "Year 3 - AI Specialization"
+            }
+        ]
+    },
+    "SUBJECTS_Y3_WEB": {
+        "endpoint": "POST http://localhost:5000/api/admin/subject",
+        "note": "Replace <BATCH_ID> with the actual _id of 'Year 3 - Web Specialization' batch",
+        "data": [
+            {
+                "subjectCode": "WEB_302_Y3WEB",
+                "subjectName": "Full Stack Dev",
+                "sessionsPerWeek": 2,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 3 - Web Specialization"
+            },
+            {
+                "subjectCode": "WEB_302_LAB_Y3WEB",
+                "subjectName": "React/Node Lab",
+                "sessionsPerWeek": 1,
+                "type": "Practical",
+                "requiredRoomType": "Laboratory",
+                "batchName": "Year 3 - Web Specialization"
+            },
+            {
+                "subjectCode": "NET_305_Y3WEB",
+                "subjectName": "Computer Networks",
+                "sessionsPerWeek": 4,
+                "type": "Theory",
+                "requiredRoomType": "Classroom",
+                "batchName": "Year 3 - Web Specialization"
+            }
+        ]
+    },
+    "FACULTY": {
+        "endpoint": "POST http://localhost:5000/api/admin/faculty",
+        "headers": {
+            "Authorization": "Bearer <YOUR_ADMIN_JWT_TOKEN>",
+            "Content-Type": "application/json"
+        },
+        "note": "Use qualifiedSubjectCodes array with subject codes (not ObjectIds). Controller will convert them automatically.",
+        "data": [
+            {
+                "name": "Dr. Alan (Math/Logic)",
+                "email": "t_alan@university.edu",
+                "password": "password123",
+                "maxClassesPerDay": 6,
+                "qualifiedSubjectCodes": [
+                    "MATH_101_Y1A",
+                    "MATH_101_Y1B",
+                    "DISCRETE_MATH_Y2A",
+                    "DISCRETE_MATH_Y2B"
+                ],
+                "unavailableTimeSlots": []
+            },
+            {
+                "name": "Prof. Grace (Core CS)",
+                "email": "t_grace@university.edu",
+                "password": "password123",
+                "maxClassesPerDay": 6,
+                "qualifiedSubjectCodes": [
+                    "CS_101_Y1A",
+                    "CS_101_LAB_Y1A",
+                    "CS_101_Y1B",
+                    "CS_101_LAB_Y1B",
+                    "DSA_201_Y2B"
+                ],
+                "unavailableTimeSlots": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        1
+                    ],
+                    [
+                        4,
+                        6
+                    ],
+                    [
+                        4,
+                        7
+                    ]
+                ]
+            },
+            {
+                "name": "Prof. Linus (OS/Sys)",
+                "email": "t_linus@university.edu",
+                "password": "password123",
+                "maxClassesPerDay": 6,
+                "qualifiedSubjectCodes": [
+                    "OS_301_Y3AI",
+                    "OS_301_LAB_Y3AI",
+                    "DSA_201_Y2A",
+                    "DSA_201_LAB_Y2A"
+                ],
+                "unavailableTimeSlots": [
+                    [
+                        2,
+                        0
+                    ],
+                    [
+                        2,
+                        1
+                    ],
+                    [
+                        2,
+                        2
+                    ],
+                    [
+                        2,
+                        3
+                    ]
+                ]
+            },
+            {
+                "name": "Dr. Ada (AI/ML)",
+                "email": "t_ada@university.edu",
+                "password": "password123",
+                "maxClassesPerDay": 6,
+                "qualifiedSubjectCodes": [
+                    "AI_401_Y3AI",
+                    "AI_401_LAB_Y3AI",
+                    "PYTHON_102_Y1A",
+                    "PYTHON_102_Y1B"
+                ],
+                "unavailableTimeSlots": [
+                    [
+                        1,
+                        0
+                    ],
+                    [
+                        3,
+                        0
+                    ],
+                    [
+                        4,
+                        0
+                    ]
+                ]
+            },
+            {
+                "name": "Mr. Tim (Web - Visiting)",
+                "email": "t_tim@university.edu",
+                "password": "password123",
+                "maxClassesPerDay": 6,
+                "qualifiedSubjectCodes": [
+                    "WEB_302_Y3WEB",
+                    "WEB_302_LAB_Y3WEB"
+                ],
+                "unavailableTimeSlots": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        1
+                    ],
+                    [
+                        0,
+                        2
+                    ],
+                    [
+                        0,
+                        3
+                    ],
+                    [
+                        1,
+                        0
+                    ],
+                    [
+                        1,
+                        1
+                    ],
+                    [
+                        1,
+                        2
+                    ],
+                    [
+                        1,
+                        3
+                    ],
+                    [
+                        2,
+                        0
+                    ],
+                    [
+                        2,
+                        1
+                    ],
+                    [
+                        2,
+                        2
+                    ],
+                    [
+                        2,
+                        3
+                    ]
+                ]
+            },
+            {
+                "name": "Prof. Bob (Database)",
+                "email": "t_bob@university.edu",
+                "password": "password123",
+                "maxClassesPerDay": 6,
+                "qualifiedSubjectCodes": [
+                    "DB_202_Y2A",
+                    "DB_202_LAB_Y2A",
+                    "DB_202_Y2B",
+                    "DB_202_LAB_Y2B"
+                ],
+                "unavailableTimeSlots": []
+            },
+            {
+                "name": "Sarah (Teaching Asst)",
+                "email": "t_sarah@university.edu",
+                "password": "password123",
+                "maxClassesPerDay": 6,
+                "qualifiedSubjectCodes": [
+                    "CS_101_LAB_Y1A",
+                    "CS_101_LAB_Y1B",
+                    "DSA_201_LAB_Y2A",
+                    "DSA_201_LAB_Y2B"
+                ],
+                "unavailableTimeSlots": [
+                    [
+                        0,
+                        4
+                    ],
+                    [
+                        0,
+                        5
+                    ],
+                    [
+                        0,
+                        6
+                    ],
+                    [
+                        0,
+                        7
+                    ]
+                ]
+            },
+            {
+                "name": "Ken (Networks)",
+                "email": "t_ken@university.edu",
+                "password": "password123",
+                "maxClassesPerDay": 6,
+                "qualifiedSubjectCodes": [
+                    "NET_305_Y3WEB"
+                ],
+                "unavailableTimeSlots": []
+            }
+        ]
+    },
+    "STUDENTS": {
+        "endpoint": "POST http://localhost:5000/api/admin/student",
+        "headers": {
+            "Authorization": "Bearer <YOUR_ADMIN_JWT_TOKEN>",
+            "Content-Type": "application/json"
+        },
+        "note": "Use batchName (not batch ObjectId). Controller will look up the batch automatically.",
+        "data": [
+            {
+                "name": "Student 1 - Year 1 Sec A",
+                "email": "student.y1a.1@university.edu",
+                "password": "password123",
+                "batchName": "Year 1 - Sec A"
+            },
+            {
+                "name": "Student 2 - Year 1 Sec A",
+                "email": "student.y1a.2@university.edu",
+                "password": "password123",
+                "batchName": "Year 1 - Sec A"
+            },
+            {
+                "name": "Student 1 - Year 1 Sec B",
+                "email": "student.y1b.1@university.edu",
+                "password": "password123",
+                "batchName": "Year 1 - Sec B"
+            },
+            {
+                "name": "Student 2 - Year 1 Sec B",
+                "email": "student.y1b.2@university.edu",
+                "password": "password123",
+                "batchName": "Year 1 - Sec B"
+            },
+            {
+                "name": "Student 1 - Year 2 Sec A",
+                "email": "student.y2a.1@university.edu",
+                "password": "password123",
+                "batchName": "Year 2 - Sec A"
+            },
+            {
+                "name": "Student 2 - Year 2 Sec A",
+                "email": "student.y2a.2@university.edu",
+                "password": "password123",
+                "batchName": "Year 2 - Sec A"
+            },
+            {
+                "name": "Student 1 - Year 2 Sec B",
+                "email": "student.y2b.1@university.edu",
+                "password": "password123",
+                "batchName": "Year 2 - Sec B"
+            },
+            {
+                "name": "Student 2 - Year 2 Sec B",
+                "email": "student.y2b.2@university.edu",
+                "password": "password123",
+                "batchName": "Year 2 - Sec B"
+            },
+            {
+                "name": "Student 1 - Year 3 AI",
+                "email": "student.y3ai.1@university.edu",
+                "password": "password123",
+                "batchName": "Year 3 - AI Specialization"
+            },
+            {
+                "name": "Student 2 - Year 3 AI",
+                "email": "student.y3ai.2@university.edu",
+                "password": "password123",
+                "batchName": "Year 3 - AI Specialization"
+            },
+            {
+                "name": "Student 1 - Year 3 Web",
+                "email": "student.y3web.1@university.edu",
+                "password": "password123",
+                "batchName": "Year 3 - Web Specialization"
+            },
+            {
+                "name": "Student 2 - Year 3 Web",
+                "email": "student.y3web.2@university.edu",
+                "password": "password123",
+                "batchName": "Year 3 - Web Specialization"
+            }
+        ]
+    },
+    "INSERTION_ORDER": [
+        "1. Insert all CLASSROOMS (6 items)",
+        "2. Insert all BATCHES (6 items)",
+        "3. Go to MongoDB and copy the _id of each batch created",
+        "4. Insert SUBJECTS for each batch (replace <BATCH_ID> placeholders with actual ObjectIds)",
+        "5. Go to MongoDB and copy the _id of each subject created",
+        "6. Insert FACULTY (replace <SUBJECT_ID> placeholders in qualifiedSubjects arrays)",
+        "7. Insert STUDENTS (replace <BATCH_ID> placeholders)"
+    ],
+    "POSTMAN_TIPS": [
+        "Save your admin JWT token as an environment variable in Postman",
+        "Use {{admin_token}} in Authorization header",
+        "After inserting batches, query them: GET http://localhost:5000/api/admin/batches",
+        "Copy _id values from responses to use in subsequent requests",
+        "For arrays like qualifiedSubjects, use actual ObjectId strings like: ['6756abc123def456789', '6756abc987fed654321']"
+    ],
+    "MAPPING_REFERENCE": {
+        "mock_to_mongodb": {
+            "rooms.type": {
+                "lecture_hall": "Classroom",
+                "computer_lab": "Laboratory"
+            },
+            "courses.requires_lab": {
+                "true": "type: 'Practical', requiredRoomType: 'Laboratory'",
+                "false": "type: 'Theory', requiredRoomType: 'Classroom'"
+            },
+            "teachers.unavailable_slots": "unavailableTimeSlots: [[day, slot], ...]",
+            "teachers.qualified_courses": "qualifiedSubjects: [ObjectId, ObjectId, ...]"
+        }
+    }
+}

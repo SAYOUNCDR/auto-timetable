@@ -3,6 +3,7 @@ const Timetable = require("../models/timetable.model");
 const Batch = require("../models/batch.model");
 const Faculty = require("../models/faculty.model");
 const Classroom = require("../models/class.model");
+const Subject = require("../models/subject.model");
 const Student = require("../models/student.model");
 
 // Transform MongoDB Docs to Python Input Format
@@ -46,9 +47,11 @@ const preparePythonPayload = async () => {
       // FIND A TEACHER: In a real app, Admin assigns this.
       // Here, we auto-assign the first Faculty qualified for this subject.
       const qualifiedTeacher = faculty.find((f) =>
-        f.qualifiedSubjects.some(
-          (qs) => qs.toString() === subject._id.toString()
-        )
+        f.qualifiedSubjects.some((qs) => {
+          // qs could be ObjectId or populated object, handle both
+          const qsId = qs._id ? qs._id.toString() : qs.toString();
+          return qsId === subject._id.toString();
+        })
       );
 
       if (!qualifiedTeacher) {
