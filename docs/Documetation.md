@@ -884,138 +884,768 @@ VITE_SCHEDULER_URL=http://localhost:8000
 
 ## 📖 Usage Guide
 
-### Initial Setup Workflow
+This comprehensive guide walks you through the complete setup and testing of the TimeTable Management System from scratch, including sample data for each step.
 
-#### 1. Create First Admin
+---
+
+### 🚀 Complete Setup & Testing Workflow
+
+#### Prerequisites Check
+
+Before starting, ensure all services are running:
 
 ```bash
-curl -X POST http://localhost:5000/api/dev/create-admin \
-  -H "Content-Type: application/json" \
-  -H "x-dev-key: your_dev_key" \
-  -d '{
-    "name": "System Admin",
-    "email": "admin@university.edu",
-    "password": "SecurePass123"
-  }'
+# Terminal 1: MongoDB
+mongod
+
+# Terminal 2: Backend (Express)
+cd backend
+npm run dev
+# Should show: Server is running on http://localhost:5000
+
+# Terminal 3: Scheduler Core (Python)
+cd scheduler_core
+venv\Scripts\activate  # Windows
+# source venv/bin/activate  # Mac/Linux
+uvicorn main:app --reload --port 8000
+# Should show: Uvicorn running on http://localhost:8000
 ```
 
-#### 2. Admin Login
+---
+
+### Step 0: Developer Access Setup
+
+**Objective:** Verify developer API key works for creating the first admin.
+
+**Endpoint:** `POST /api/dev/create-admin`
+
+**Required Header:** `x-dev-key` (from your `.env` file)
+
+**Test Command:**
 
 ```bash
-curl -X POST http://localhost:5000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
+curl -X POST http://localhost:5000/api/dev/create-admin ^
+  -H "Content-Type: application/json" ^
+  -H "x-dev-key: your_dev_api_key_from_env" ^
+  -d "{\"name\":\"System Administrator\",\"email\":\"admin@university.edu\",\"password\":\"Admin@123\"}"
+```
+
+**Expected Response:**
+
+```json
+{
+  "message": "Admin created successfully",
+  "adminId": "674a5e8f9c1234567890abcd"
+}
+```
+
+**Notes:**
+
+- This route is protected by `DEV_API_KEY` from `.env`
+- Can only be used when no admin exists
+- Store the `adminId` for reference
+
+---
+
+### Step 1: Admin Login
+
+**Objective:** Authenticate as admin and get JWT token for subsequent requests.
+
+**Endpoint:** `POST /api/auth/login`
+
+**Test Command:**
+
+```bash
+curl -X POST http://localhost:5000/api/auth/login ^
+  -H "Content-Type: application/json" ^
+  -d "{\"email\":\"admin@university.edu\",\"password\":\"Admin@123\",\"role\":\"admin\"}"
+```
+
+**Expected Response:**
+
+```json
+{
+  "message": "Login successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGE1ZThmOWMxMjM0NTY3ODkwYWJjZCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczMzY2NjAwMCwiZXhwIjoxNzMzNzUyNDAwfQ.xyz...",
+  "user": {
+    "id": "674a5e8f9c1234567890abcd",
+    "name": "System Administrator",
     "email": "admin@university.edu",
-    "password": "SecurePass123",
     "role": "admin"
-  }'
+  }
+}
 ```
 
-Save the returned JWT token.
+**Important:** Copy the `token` value. You'll use it in the `Authorization: Bearer <token>` header for all subsequent admin requests.
 
-#### 3. Create Resources
-
-**Create Classrooms:**
+**Save as Environment Variable (Optional):**
 
 ```bash
-curl -X POST http://localhost:5000/api/admin/create-classroom \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "className": "Room 101",
-    "capacity": 60,
+# Windows CMD
+set TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+# PowerShell
+$env:TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Linux/Mac
+export TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+---
+
+### Step 2: Create Classrooms (Admin)
+
+**Objective:** Create physical spaces for classes.
+
+**Endpoint:** `POST /api/admin/create-classroom`
+
+#### 2.1 Create Lecture Hall 1
+
+```bash
+curl -X POST http://localhost:5000/api/admin/create-classroom ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"className\":\"LH-101\",\"capacity\":80,\"type\":\"Classroom\"}"
+```
+
+**Expected Response:**
+
+```json
+{
+  "message": "Classroom created successfully",
+  "classroom": {
+    "_id": "674a5f1a9c1234567890abc1",
+    "className": "LH-101",
+    "capacity": 80,
     "type": "Classroom"
-  }'
+  }
+}
 ```
 
-**Create Batch:**
+#### 2.2 Create Lecture Hall 2
 
 ```bash
-curl -X POST http://localhost:5000/api/admin/create-batch \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "batchName": "CSE 2024 A",
+curl -X POST http://localhost:5000/api/admin/create-classroom ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"className\":\"LH-102\",\"capacity\":60,\"type\":\"Classroom\"}"
+```
+
+#### 2.3 Create Computer Lab A
+
+```bash
+curl -X POST http://localhost:5000/api/admin/create-classroom ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"className\":\"Lab-CS-A\",\"capacity\":60,\"type\":\"Laboratory\"}"
+```
+
+#### 2.4 Create Computer Lab B
+
+```bash
+curl -X POST http://localhost:5000/api/admin/create-classroom ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"className\":\"Lab-CS-B\",\"capacity\":60,\"type\":\"Laboratory\"}"
+```
+
+**Notes:**
+
+- `type` must be either `"Classroom"` or `"Laboratory"`
+- Save classroom IDs for reference
+
+---
+
+### Step 3: Create Batches (Admin)
+
+**Objective:** Create student groups/sections.
+
+**Endpoint:** `POST /api/admin/create-batch`
+
+#### 3.1 Create Batch A
+
+```bash
+curl -X POST http://localhost:5000/api/admin/create-batch ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"batchName\":\"CSE-2024-A\",\"strength\":55,\"yearOfStudy\":2}"
+```
+
+**Expected Response:**
+
+```json
+{
+  "message": "Batch created successfully",
+  "batch": {
+    "_id": "674a5f2b9c1234567890abc2",
+    "batchName": "CSE-2024-A",
     "strength": 55,
     "yearOfStudy": 2,
     "subjects": []
-  }'
+  }
+}
 ```
 
-**Create Faculty:**
+**Save the batch `_id` as `BATCH_A_ID`**
+
+#### 3.2 Create Batch B
 
 ```bash
-curl -X POST http://localhost:5000/api/admin/create-faculty \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Dr. Smith",
-    "email": "smith@university.edu",
-    "password": "password123",
-    "maxClassesPerDay": 4,
-    "qualifiedSubjects": [],
-    "unavailableTimeSlots": []
-  }'
+curl -X POST http://localhost:5000/api/admin/create-batch ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"batchName\":\"CSE-2024-B\",\"strength\":48,\"yearOfStudy\":2}"
 ```
 
-**Create Subject:**
+**Save the batch `_id` as `BATCH_B_ID`**
+
+---
+
+### Step 4: Create Subjects (Admin)
+
+**Objective:** Define courses for batches.
+
+**Endpoint:** `POST /api/admin/create-subject`
+
+**Note:** Replace `<BATCH_A_ID>` with actual batch ID from Step 3.
+
+#### 4.1 Create Math Subject for Batch A
 
 ```bash
-curl -X POST http://localhost:5000/api/admin/create-subject \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "subjectCode": "CS101",
-    "subjectName": "Programming Basics",
-    "sessionsPerWeek": 3,
+curl -X POST http://localhost:5000/api/admin/create-subject ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"subjectCode\":\"MATH101\",\"subjectName\":\"Calculus I\",\"sessionsPerWeek\":2,\"type\":\"Theory\",\"requiredRoomType\":\"Classroom\",\"batch\":\"<BATCH_A_ID>\"}"
+```
+
+**Expected Response:**
+
+```json
+{
+  "message": "Subject created successfully",
+  "subject": {
+    "_id": "674a5f3c9c1234567890abc3",
+    "subjectCode": "MATH101",
+    "subjectName": "Calculus I",
+    "sessionsPerWeek": 2,
     "type": "Theory",
     "requiredRoomType": "Classroom",
-    "batch": "<batch_id>"
-  }'
+    "batch": "674a5f2b9c1234567890abc2"
+  }
+}
 ```
 
-#### 4. Generate Timetable
+**Save as `MATH101_ID`**
+
+#### 4.2 Create CS Theory Subject for Batch A
 
 ```bash
-curl -X POST http://localhost:5000/api/timetable/generate \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "semester": "Fall 2024",
-    "metadata": {
-      "days_per_week": 5,
-      "slots_per_day": 8,
-      "slot_duration_min": 60
+curl -X POST http://localhost:5000/api/admin/create-subject ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"subjectCode\":\"CS101\",\"subjectName\":\"Programming Basics\",\"sessionsPerWeek\":2,\"type\":\"Theory\",\"requiredRoomType\":\"Classroom\",\"batch\":\"<BATCH_A_ID>\"}"
+```
+
+**Save as `CS101_ID`**
+
+#### 4.3 Create CS Lab Subject for Batch A
+
+```bash
+curl -X POST http://localhost:5000/api/admin/create-subject ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"subjectCode\":\"CS101_LAB\",\"subjectName\":\"Programming Lab\",\"sessionsPerWeek\":1,\"type\":\"Practical\",\"requiredRoomType\":\"Laboratory\",\"batch\":\"<BATCH_A_ID>\"}"
+```
+
+**Save as `CS101_LAB_ID`**
+
+#### 4.4 Create English Subject for Batch A
+
+```bash
+curl -X POST http://localhost:5000/api/admin/create-subject ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"subjectCode\":\"ENG101\",\"subjectName\":\"English Communication\",\"sessionsPerWeek\":1,\"type\":\"Theory\",\"requiredRoomType\":\"Classroom\",\"batch\":\"<BATCH_A_ID>\"}"
+```
+
+**Save as `ENG101_ID`**
+
+#### 4.5 Create Subjects for Batch B (Repeat with BATCH_B_ID)
+
+```bash
+# Math for Batch B
+curl -X POST http://localhost:5000/api/admin/create-subject ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"subjectCode\":\"MATH101_B\",\"subjectName\":\"Calculus I\",\"sessionsPerWeek\":2,\"type\":\"Theory\",\"requiredRoomType\":\"Classroom\",\"batch\":\"<BATCH_B_ID>\"}"
+
+# CS Theory for Batch B
+curl -X POST http://localhost:5000/api/admin/create-subject ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"subjectCode\":\"CS101_B\",\"subjectName\":\"Programming Basics\",\"sessionsPerWeek\":2,\"type\":\"Theory\",\"requiredRoomType\":\"Classroom\",\"batch\":\"<BATCH_B_ID>\"}"
+
+# CS Lab for Batch B
+curl -X POST http://localhost:5000/api/admin/create-subject ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"subjectCode\":\"CS101_LAB_B\",\"subjectName\":\"Programming Lab\",\"sessionsPerWeek\":1,\"type\":\"Practical\",\"requiredRoomType\":\"Laboratory\",\"batch\":\"<BATCH_B_ID>\"}"
+```
+
+---
+
+### Step 5: Create Faculty Members (Admin)
+
+**Objective:** Create teacher accounts with qualifications and availability.
+
+**Endpoint:** `POST /api/admin/create-faculty`
+
+**Note:** Replace subject IDs with actual IDs from Step 4.
+
+#### 5.1 Create Dr. Arora (Math Teacher)
+
+```bash
+curl -X POST http://localhost:5000/api/admin/create-faculty ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"name\":\"Dr. Arora\",\"email\":\"arora@university.edu\",\"password\":\"Faculty@123\",\"maxClassesPerDay\":4,\"qualifiedSubjects\":[\"<MATH101_ID>\"],\"unavailableTimeSlots\":[[1,0],[3,5]]}"
+```
+
+**Expected Response:**
+
+```json
+{
+  "message": "Faculty created successfully",
+  "faculty": {
+    "_id": "674a5f4d9c1234567890abc4",
+    "name": "Dr. Arora",
+    "email": "arora@university.edu",
+    "role": "faculty",
+    "maxClassesPerDay": 4,
+    "qualifiedSubjects": ["674a5f3c9c1234567890abc3"],
+    "unavailableTimeSlots": [
+      [1, 0],
+      [3, 5]
+    ]
+  }
+}
+```
+
+**Save as `FACULTY_ARORA_ID`**
+
+**Unavailability Explanation:**
+
+- `[1, 0]` = Tuesday (day 1), Slot 0 (9:00 AM)
+- `[3, 5]` = Thursday (day 3), Slot 5 (2:00 PM)
+
+#### 5.2 Create Prof. Rao (CS Teacher)
+
+```bash
+curl -X POST http://localhost:5000/api/admin/create-faculty ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"name\":\"Prof. Rao\",\"email\":\"rao@university.edu\",\"password\":\"Faculty@123\",\"maxClassesPerDay\":5,\"qualifiedSubjects\":[\"<CS101_ID>\",\"<CS101_LAB_ID>\"],\"unavailableTimeSlots\":[[2,7]]}"
+```
+
+**Save as `FACULTY_RAO_ID`**
+
+#### 5.3 Create Ms. Khan (English Teacher)
+
+```bash
+curl -X POST http://localhost:5000/api/admin/create-faculty ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"name\":\"Ms. Khan\",\"email\":\"khan@university.edu\",\"password\":\"Faculty@123\",\"maxClassesPerDay\":3,\"qualifiedSubjects\":[\"<ENG101_ID>\"],\"unavailableTimeSlots\":[]}"
+```
+
+**Save as `FACULTY_KHAN_ID`**
+
+---
+
+### Step 6: Create Students (Admin)
+
+**Objective:** Create student accounts assigned to batches.
+
+**Endpoint:** `POST /api/admin/create-student`
+
+#### 6.1 Create Student 1 (Batch A)
+
+```bash
+curl -X POST http://localhost:5000/api/admin/create-student ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"name\":\"Rahul Sharma\",\"email\":\"rahul.sharma@student.edu\",\"password\":\"Student@123\",\"batch\":\"<BATCH_A_ID>\"}"
+```
+
+**Expected Response:**
+
+```json
+{
+  "message": "Student created successfully",
+  "student": {
+    "_id": "674a5f5e9c1234567890abc5",
+    "name": "Rahul Sharma",
+    "email": "rahul.sharma@student.edu",
+    "role": "student",
+    "batch": "674a5f2b9c1234567890abc2"
+  }
+}
+```
+
+**Save as `STUDENT_RAHUL_ID`**
+
+#### 6.2 Create Student 2 (Batch A)
+
+```bash
+curl -X POST http://localhost:5000/api/admin/create-student ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"name\":\"Priya Gupta\",\"email\":\"priya.gupta@student.edu\",\"password\":\"Student@123\",\"batch\":\"<BATCH_A_ID>\"}"
+```
+
+#### 6.3 Create Student 3 (Batch B)
+
+```bash
+curl -X POST http://localhost:5000/api/admin/create-student ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"name\":\"Amit Singh\",\"email\":\"amit.singh@student.edu\",\"password\":\"Student@123\",\"batch\":\"<BATCH_B_ID>\"}"
+```
+
+---
+
+### Step 7: Verify All Data (Admin)
+
+**Objective:** Retrieve and verify all created resources.
+
+#### 7.1 Get All Faculty
+
+```bash
+curl -X GET http://localhost:5000/api/admin/faculty ^
+  -H "Authorization: Bearer %TOKEN%"
+```
+
+#### 7.2 Get All Students
+
+```bash
+curl -X GET http://localhost:5000/api/admin/students ^
+  -H "Authorization: Bearer %TOKEN%"
+```
+
+#### 7.3 Get All Batches
+
+```bash
+curl -X GET http://localhost:5000/api/admin/batches ^
+  -H "Authorization: Bearer %TOKEN%"
+```
+
+#### 7.4 Get All Subjects
+
+```bash
+curl -X GET http://localhost:5000/api/admin/subjects ^
+  -H "Authorization: Bearer %TOKEN%"
+```
+
+#### 7.5 Get All Classrooms
+
+```bash
+curl -X GET http://localhost:5000/api/admin/classrooms ^
+  -H "Authorization: Bearer %TOKEN%"
+```
+
+---
+
+### Step 8: Test Faculty Login
+
+**Objective:** Verify faculty authentication works.
+
+**Endpoint:** `POST /api/auth/login`
+
+```bash
+curl -X POST http://localhost:5000/api/auth/login ^
+  -H "Content-Type: application/json" ^
+  -d "{\"email\":\"arora@university.edu\",\"password\":\"Faculty@123\",\"role\":\"faculty\"}"
+```
+
+**Expected Response:**
+
+```json
+{
+  "message": "Login successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": "674a5f4d9c1234567890abc4",
+    "name": "Dr. Arora",
+    "email": "arora@university.edu",
+    "role": "faculty"
+  }
+}
+```
+
+**Save faculty token as `FACULTY_TOKEN`**
+
+---
+
+### Step 9: Test Student Login
+
+**Objective:** Verify student authentication works.
+
+**Endpoint:** `POST /api/auth/login`
+
+```bash
+curl -X POST http://localhost:5000/api/auth/login ^
+  -H "Content-Type: application/json" ^
+  -d "{\"email\":\"rahul.sharma@student.edu\",\"password\":\"Student@123\",\"role\":\"student\"}"
+```
+
+**Expected Response:**
+
+```json
+{
+  "message": "Login successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": "674a5f5e9c1234567890abc5",
+    "name": "Rahul Sharma",
+    "email": "rahul.sharma@student.edu",
+    "role": "student"
+  }
+}
+```
+
+**Save student token as `STUDENT_TOKEN`**
+
+---
+
+### Step 10: Generate Timetable (Admin)
+
+**Objective:** Use AI scheduler to generate optimized timetable.
+
+**Endpoint:** `POST /api/timetable/generate`
+
+**Prerequisites:**
+
+- Python scheduler service running on port 8000
+- All resources created (classrooms, faculty, batches, subjects)
+
+```bash
+curl -X POST http://localhost:5000/api/timetable/generate ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer %TOKEN%" ^
+  -d "{\"semester\":\"Fall 2024\"}"
+```
+
+**Expected Response:**
+
+```json
+{
+  "message": "Timetable generated successfully",
+  "count": 15,
+  "semester": "Fall 2024"
+}
+```
+
+**Note:** This may take 5-30 seconds depending on complexity.
+
+---
+
+### Step 11: View Generated Timetable
+
+#### 11.1 Admin View - Full Timetable
+
+```bash
+curl -X GET "http://localhost:5000/api/timetable/view/all?semester=Fall 2024" ^
+  -H "Authorization: Bearer %TOKEN%"
+```
+
+**Expected Response:**
+
+```json
+{
+  "message": "Full timetable retrieved",
+  "count": 15,
+  "timetable": [
+    {
+      "_id": "674a5f6f9c1234567890abc6",
+      "day": 0,
+      "slot": 2,
+      "room": {
+        "_id": "674a5f1a9c1234567890abc1",
+        "className": "LH-101",
+        "capacity": 80,
+        "type": "Classroom"
+      },
+      "faculty": {
+        "_id": "674a5f4d9c1234567890abc4",
+        "name": "Dr. Arora",
+        "email": "arora@university.edu"
+      },
+      "subject": {
+        "_id": "674a5f3c9c1234567890abc3",
+        "subjectCode": "MATH101",
+        "subjectName": "Calculus I",
+        "type": "Theory"
+      },
+      "batch": {
+        "_id": "674a5f2b9c1234567890abc2",
+        "batchName": "CSE-2024-A",
+        "strength": 55
+      },
+      "semester": "Fall 2024"
     }
-  }'
+    // ... more entries
+  ]
+}
 ```
 
-### Common Operations
-
-#### View Faculty Timetable
+#### 11.2 Faculty View - Personal Schedule
 
 ```bash
-curl http://localhost:5000/api/timetable/faculty/<faculty_id> \
-  -H "Authorization: Bearer <token>"
+curl -X GET "http://localhost:5000/api/timetable/view/faculty/<FACULTY_ARORA_ID>?semester=Fall 2024" ^
+  -H "Authorization: Bearer %FACULTY_TOKEN%"
 ```
 
-#### View Batch Timetable
+**Expected Response:** Filtered timetable showing only Dr. Arora's classes.
+
+#### 11.3 Student View - Batch Schedule
 
 ```bash
-curl http://localhost:5000/api/timetable/batch/<batch_id> \
-  -H "Authorization: Bearer <token>"
+curl -X GET "http://localhost:5000/api/timetable/view/batch/<BATCH_A_ID>?semester=Fall 2024" ^
+  -H "Authorization: Bearer %STUDENT_TOKEN%"
 ```
 
-#### Update Faculty Unavailability
+**Expected Response:** Filtered timetable showing only Batch A's schedule.
+
+#### 11.4 Room View - Room Utilization
 
 ```bash
-curl -X PUT http://localhost:5000/api/admin/faculty/<faculty_id> \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "unavailableTimeSlots": [[0, 0], [2, 7]]
-  }'
+curl -X GET "http://localhost:5000/api/timetable/view/room/<ROOM_ID>?semester=Fall 2024" ^
+  -H "Authorization: Bearer %TOKEN%"
 ```
+
+**Expected Response:** Shows all classes scheduled in that specific room.
+
+---
+
+### 📊 Summary of Created Data
+
+After completing all steps, you should have:
+
+| Resource          | Count | Sample IDs                              |
+| ----------------- | ----- | --------------------------------------- |
+| Admin             | 1     | admin@university.edu                    |
+| Faculty           | 3     | Dr. Arora, Prof. Rao, Ms. Khan          |
+| Students          | 3+    | Rahul, Priya, Amit                      |
+| Batches           | 2     | CSE-2024-A, CSE-2024-B                  |
+| Subjects          | 7     | MATH101, CS101, CS101_LAB, ENG101, etc. |
+| Classrooms        | 4     | LH-101, LH-102, Lab-CS-A, Lab-CS-B      |
+| Timetable Entries | ~15   | Generated by AI scheduler               |
+
+---
+
+### 🧪 Complete Testing Script
+
+Save this as `test_api.sh` (Linux/Mac) or `test_api.bat` (Windows):
+
+```bash
+@echo off
+setlocal enabledelayedexpansion
+
+echo ===================================
+echo TimeTable API Complete Test Script
+echo ===================================
+
+REM Step 0: Create Admin
+echo.
+echo [Step 0] Creating First Admin...
+curl -X POST http://localhost:5000/api/dev/create-admin ^
+  -H "Content-Type: application/json" ^
+  -H "x-dev-key: dev_secret_key_123" ^
+  -d "{\"name\":\"System Administrator\",\"email\":\"admin@university.edu\",\"password\":\"Admin@123\"}"
+
+echo.
+pause
+
+REM Step 1: Admin Login
+echo.
+echo [Step 1] Admin Login...
+curl -X POST http://localhost:5000/api/auth/login ^
+  -H "Content-Type: application/json" ^
+  -d "{\"email\":\"admin@university.edu\",\"password\":\"Admin@123\",\"role\":\"admin\"}"
+
+echo.
+echo Copy the token and set it: set TOKEN=<your_token>
+pause
+
+REM Continue with remaining steps...
+```
+
+---
+
+### 🔍 Troubleshooting Testing Issues
+
+#### Issue 1: "Unauthorized" Error
+
+**Solution:** Ensure you're passing the correct JWT token in Authorization header.
+
+#### Issue 2: "Batch not found" when creating subjects
+
+**Solution:** Verify batch ID is correct. Use GET /api/admin/batches to list all batches.
+
+#### Issue 3: "Subject not found" when creating faculty
+
+**Solution:** Create subjects first, then assign them to faculty.
+
+#### Issue 4: Timetable generation fails
+
+**Solution:**
+
+- Check Python scheduler is running: `curl http://localhost:8000`
+- Verify room capacity >= batch strength
+- Ensure lab rooms exist for practical subjects
+
+---
+
+### 📝 Quick Reference: All API Endpoints
+
+| Method | Endpoint                          | Auth    | Description           |
+| ------ | --------------------------------- | ------- | --------------------- |
+| POST   | `/api/dev/create-admin`           | DEV_KEY | Create first admin    |
+| POST   | `/api/auth/login`                 | None    | Login (all roles)     |
+| POST   | `/api/admin/create-faculty`       | Admin   | Create faculty        |
+| POST   | `/api/admin/create-student`       | Admin   | Create student        |
+| POST   | `/api/admin/create-batch`         | Admin   | Create batch          |
+| POST   | `/api/admin/create-subject`       | Admin   | Create subject        |
+| POST   | `/api/admin/create-classroom`     | Admin   | Create classroom      |
+| GET    | `/api/admin/faculty`              | Admin   | List all faculty      |
+| GET    | `/api/admin/students`             | Admin   | List all students     |
+| GET    | `/api/admin/batches`              | Admin   | List all batches      |
+| GET    | `/api/admin/subjects`             | Admin   | List all subjects     |
+| GET    | `/api/admin/classrooms`           | Admin   | List all classrooms   |
+| POST   | `/api/timetable/generate`         | Admin   | Generate timetable    |
+| GET    | `/api/timetable/view/all`         | Admin   | View full timetable   |
+| GET    | `/api/timetable/view/faculty/:id` | Any     | View faculty schedule |
+| GET    | `/api/timetable/view/batch/:id`   | Any     | View batch schedule   |
+| GET    | `/api/timetable/view/room/:id`    | Any     | View room schedule    |
+
+---
+
+**Testing Completion Checklist:**
+
+- [ ] Step 0: Admin created via dev endpoint
+- [ ] Step 1: Admin login successful
+- [ ] Step 2: 4 classrooms created
+- [ ] Step 3: 2 batches created
+- [ ] Step 4: 7 subjects created
+- [ ] Step 5: 3 faculty members created
+- [ ] Step 6: 3 students created
+- [ ] Step 7: All data verified via GET endpoints
+- [ ] Step 8: Faculty login successful
+- [ ] Step 9: Student login successful
+- [ ] Step 10: Timetable generated
+- [ ] Step 11: All view endpoints tested
+
+---
 
 ---
 
