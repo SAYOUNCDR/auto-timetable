@@ -3,7 +3,7 @@ const Timetable = require("../models/timetable.model");
 const Batch = require("../models/batch.model");
 const Faculty = require("../models/faculty.model");
 const Classroom = require("../models/class.model");
-const Subject = require("../models/subject.model");
+const Student = require("../models/student.model");
 
 // Transform MongoDB Docs to Python Input Format
 
@@ -23,6 +23,7 @@ const preparePythonPayload = async () => {
   const resources_teachers = faculty.map((f) => ({
     id: f._id.toString(),
     name: f.name,
+    qualified_courses: f.qualifiedSubjects.map((s) => s._id.toString()),
     unavailable_slots: f.unavailableTimeSlots || [], // Ensure array exists
   }));
 
@@ -61,7 +62,7 @@ const preparePythonPayload = async () => {
         group_id: batch._id.toString(),
         teacher_id: qualifiedTeacher._id.toString(),
         course_id: subject._id.toString(),
-        duration_slots: 1, // Default to 1 hour, or add logic if Subject has duration
+        duration_slots: subject.type === "Practical" ? 3 : 1, // 3 hours for labs, 1 for theory
         sessions_per_week: subject.sessionsPerWeek,
         requires_lab: subject.type === "Practical",
       });
@@ -85,7 +86,6 @@ const preparePythonPayload = async () => {
     requirements: requirements,
   };
 };
-
 
 // Controller to Generate Timetable
 exports.generateTimetable = async (req, res) => {
@@ -138,40 +138,60 @@ exports.generateTimetable = async (req, res) => {
 
 // 1. Get all (for admin)
 exports.getAllTimetable = async (req, res) => {
-  const table = await Timetable.find()
-    .populate("room", "className")
-    .populate("faculty", "name")
-    .populate("subject", "subjectName subjectCode")
-    .populate("batch", "batchName")
-    .sort({ day: 1, slot: 1 });
-  res.json(table);
+  try {
+    const table = await Timetable.find()
+      .populate("room", "className")
+      .populate("faculty", "name")
+      .populate("subject", "subjectName subjectCode")
+      .populate("batch", "batchName")
+      .sort({ day: 1, slot: 1 });
+    res.json(table);
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: "Failed to fetch timetable", details: err.message });
+  }
 };
 
 // 2. Get For Logged In Teacher
 exports.getMyTimetable = async (req, res) => {
-  // req.user.id comes from Auth Middleware
-  const table = await Timetable.find({ faculty: req.user.id })
-    .populate("room", "className")
-    .populate("subject", "subjectName")
-    .populate("batch", "batchName")
-    .sort({ day: 1, slot: 1 });
-  res.json(table);
+  try {
+    // req.user.id comes from Auth Middleware
+    const table = await Timetable.find({ faculty: req.user.id })
+      .populate("room", "className")
+      .populate("subject", "subjectName subjectCode")
+      .populate("batch", "batchName")
+      .sort({ day: 1, slot: 1 });
+    res.json(table);
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: "Failed to fetch timetable", details: err.message });
+  }
 };
 
 // 3. Get For Logged In Student
 exports.getStudentTimetable = async (req, res) => {
-  const studentId = req.user.id;
-  const Student = require("../models/Student");
-  
-  // First find which batch the student is in
-  const student = await Student.findById(studentId);
-  if (!student) return res.status(404).json({ message: "Student not found" });
+  try {
+    const studentId = req.user.id;
 
-  const table = await Timetable.find({ batch: student.batch })
-    .populate("room", "className")
-    .populate("subject", "subjectName")
-    .populate("faculty", "name")
-    .sort({ day: 1, slot: 1 });
-  
-  res.json(table);
+    // First find which batch the student is in
+    const student = await Student.findById(studentId);
+    if (!student) return res.status(404).json({ message: "Student not found" });
+
+    const table = await Timetable.find({ batch: student.batch })
+      .populate("room", "className")
+      .populate("subject", "subjectName subjectCode")
+      .populate("faculty", "name")
+      .sort({ day: 1, slot: 1 });
+
+    res.json(table);
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: "Failed to fetch timetable", details: err.message });
+  }
 };
