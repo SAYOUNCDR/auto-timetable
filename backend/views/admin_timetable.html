@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Timetable View</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        /* Grid Table Styles */
+        .timetable-grid {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .timetable-grid th,
+        .timetable-grid td {
+            border: 1px solid #e2e8f0;
+            padding: 0;
+            vertical-align: top;
+        }
+
+        .timetable-grid th {
+            background-color: #f8fafc;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            color: #475569;
+            width: 16%;
+            /* 100% / 6 columns approx */
+        }
+
+        .timetable-grid th:first-child {
+            width: 100px;
+            /* Time column width */
+        }
+
+        .time-cell {
+            padding: 15px !important;
+            text-align: center;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.9em;
+            background-color: #fcfcfc;
+            vertical-align: middle !important;
+        }
+
+        .time-start {
+            display: block;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .time-end {
+            display: block;
+            font-size: 0.85em;
+            color: #94a3b8;
+        }
+
+        .cell-content {
+            padding: 8px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Card Style */
+        .class-card {
+            background-color: #1e293b;
+            /* Dark background like screenshot */
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            border-left: 4px solid #3b82f6;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subject-name {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+            color: #94a3b8;
+            font-size: 0.75rem;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #64748b;
+            margin-right: 4px;
+        }
+
+        .error {
+            color: #dc2626;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #fee2e2;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Generated Timetable (Admin View)</h1>
+
+    <div class="controls">
+        <label style="display:block; margin-bottom:8px; font-weight:600; color:#334155;">Admin Access Token</label>
+        <div style="display:flex; align-items:center; gap: 10px;">
+            <input type="text" id="tokenInput" placeholder="Paste Bearer Token here...">
+            <button onclick="loadTimetable()">Load Timetable</button>
+
+            <div style="border-left: 1px solid #ddd; padding-left: 10px; margin-left: 10px;">
+                <select id="batchSelect" onchange="filterAndRender()"
+                    style="padding: 10px; border-radius: 4px; border: 1px solid #ddd; min-width: 200px;">
+                    <option value="all">All Batches</option>
+                </select>
+            </div>
+        </div>
+        <div id="error" class="error"></div>
+    </div>
+
+    <div id="tableContainer"></div>
+
+    <script>
+        let allTimetableData = [];
+
+        async function loadTimetable() {
+            const token = document.getElementById('tokenInput').value;
+            const errorDiv = document.getElementById('error');
+            const container = document.getElementById('tableContainer');
+
+            if (!token) {
+                showError("Please enter a valid Admin Token");
+                return;
+            }
+
+            try {
+                errorDiv.style.display = 'none';
+                container.innerHTML = '<p style="text-align:center; color:#666;">Loading data...</p>';
+
+                const response = await fetch('http://localhost:5000/api/timetable/all', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                allTimetableData = data; // Store globally
+                populateBatches(data);
+                renderGrid(data);
+            } catch (err) {
+                showError(err.message);
+                container.innerHTML = "";
+            }
+        }
+
+        function populateBatches(data) {
+            const batchSelect = document.getElementById('batchSelect');
+            batchSelect.innerHTML = '<option value="all">All Batches</option>';
+
+            const batches = new Set();
+            data.forEach(item => {
+                if (item.batch) {
+                    const name = item.batch.batchName || item.batch;
+                    batches.add(name);
+                }
+            });
+
+            // Sort and add options
+            Array.from(batches).sort().forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                batchSelect.appendChild(option);
+            });
+        }
+
+        function filterAndRender() {
+            const selectedBatch = document.getElementById('batchSelect').value;
+            if (selectedBatch === 'all') {
+                renderGrid(allTimetableData);
+            } else {
+                const filtered = allTimetableData.filter(item => {
+                    const bName = item.batch ? (item.batch.batchName || item.batch) : '';
+                    return bName === selectedBatch;
+                });
+                renderGrid(filtered);
+            }
+        }
+
+        function showError(msg) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = msg;
+            errorDiv.style.display = 'block';
+        }
+
+        function renderGrid(data) {
+            const container = document.getElementById('tableContainer');
+            if (!data || data.length === 0) {
+                container.innerHTML = "<p style='text-align:center; padding:20px;'>No timetable data found.</p>";
+                return;
+            }
+
+            // Configuration
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+            const startHour = 9; // 9:00 AM
+            const slotsPerDay = 8; // Assuming 8 slots (9am to 5pm)
+
+            // Initialize Grid Structure: grid[slotIndex][dayIndex] = []
+            const grid = Array(slotsPerDay).fill(null).map(() =>
+                Array(days.length).fill(null).map(() => [])
+            );
+
+            // Populate Grid
+            data.forEach(item => {
+                // Normalize Slot Index
+                let slotIndex = item.slot;
+                if (slotIndex === undefined) slotIndex = item.timeSlot;
+
+                // Normalize Day Index
+                const dayIndex = item.day;
+
+                // Validate indices
+                if (slotIndex >= 0 && slotIndex < slotsPerDay && dayIndex >= 0 && dayIndex < days.length) {
+                    grid[slotIndex][dayIndex].push(item);
+                }
+            });
+
+            // Build HTML Table
+            let html = '<table class="timetable-grid">';
+
+            // Header Row
+            html += '<thead><tr><th>TIME</th>';
+            days.forEach(day => html += `<th>${day}</th>`);
+            html += '</tr></thead>';
+
+            // Body Rows
+            html += '<tbody>';
+            for (let slot = 0; slot < slotsPerDay; slot++) {
+                const timeStart = formatTime(startHour + slot);
+                const timeEnd = formatTime(startHour + slot + 1);
+
+                html += `<tr>`;
+
+                // Time Column
+                html += `<td class="time-cell">
+                            <span class="time-start">${timeStart}</span>
+                            <span class="time-end">${timeEnd}</span>
+                         </td>`;
+
+                // Day Columns
+                for (let day = 0; day < days.length; day++) {
+                    const items = grid[slot][day];
+                    html += `<td><div class="cell-content">`;
+
+                    if (items.length > 0) {
+                        items.forEach(classItem => {
+                            const subject = classItem.subject ? (classItem.subject.subjectName || classItem.subject) : 'Unknown Subject';
+                            const faculty = classItem.faculty ? (classItem.faculty.name || classItem.faculty) : 'Unknown Faculty';
+                            const room = classItem.room ? (classItem.room.className || classItem.room) : 'Unknown Room';
+                            const batch = classItem.batch ? (classItem.batch.batchName || classItem.batch) : '';
+
+                            html += `
+                                <div class="class-card">
+                                    <span class="subject-name">${subject}</span>
+                                    <div class="detail-row">
+                                        <span><span class="detail-label">INS</span> ${faculty.split(' ')[0]}</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span><span class="detail-label">RM</span> ${room}</span>
+                                    </div>
+                                    <div class="detail-row" style="margin-top:6px; border-top:1px solid #334155; padding-top:4px;">
+                                        <span style="color:#60a5fa;">${batch}</span>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+
+                    html += `</div></td>`;
+                }
+                html += `</tr>`;
+            }
+            html += '</tbody></table>';
+
+            container.innerHTML = html;
+        }
+
+        function formatTime(hour) {
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const h = hour % 12 || 12;
+            return `${h}:00 ${ampm}`;
+        }
+    </script>
+</body>
+
+</html>

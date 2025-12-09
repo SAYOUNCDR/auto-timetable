@@ -19,11 +19,18 @@ app.use(
   })
 );
 
+const path = require("path"); // this will be reomve later when frontend is ready
+
 // Routes
 app.use("/api/dev", devRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/timetable", timetableRoutes);
+
+// Serve the simple admin view - this is temporary until frontend is ready
+app.get("/view/admin-timetable", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "admin_timetable.html"));
+});
 
 app.get("/", (req, res) => {
   res.json({ message: "Ok server is healthy and running fine" });
