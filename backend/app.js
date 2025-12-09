@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 // Route files
 const devRoutes = require("./routes/devRoutes");
@@ -10,7 +11,13 @@ const timetableRoutes = require("./routes/timetableRoutes");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Frontend URL
+    credentials: true, // Allow cookies
+  })
+);
 
 // Routes
 app.use("/api/dev", devRoutes);

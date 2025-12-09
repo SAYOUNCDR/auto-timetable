@@ -33,16 +33,27 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
     const tokens = generateTokens(user);
-    res.json(tokens);
+
+    // Store Refresh Token in HttpOnly Cookie
+    res.cookie("jwt", tokens.refreshToken, {
+      httpOnly: true, // Accessible only by web server
+      secure: process.env.NODE_ENV === "production", // HTTPS only in production
+      sameSite: "strict", // Cross-site cookie
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    // Send Access Token in JSON
+    res.json({ accessToken: tokens.accessToken });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
 exports.refresh = async (req, res) => {
-  const { refreshToken } = req.body;
+  const refreshToken = req.cookies.jwt;
+
   if (!refreshToken) {
-    return res.status(400).json({ message: "Refresh token is required" });
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   jwt.verify(
@@ -54,7 +65,7 @@ exports.refresh = async (req, res) => {
 
       let user;
       if (decoded.role === "admin") user = await Admin.findById(decoded.id);
-      else if (decoded.role === "teacher")
+      else if (decoded.role === "faculty")
         user = await Faculty.findById(decoded.id);
       else if (decoded.role === "student")
         user = await Student.findById(decoded.id);
@@ -65,7 +76,18 @@ exports.refresh = async (req, res) => {
           .json({ message: "User not found during refresh." });
 
       const newTokens = generateTokens(user);
-      res.json(newTokens);
+      res.json({ accessToken: newTokens.accessToken });
     }
   );
+};
+
+exports.logout = (req, res) => {
+  const cookies = req.cookies;
+  if (!cookies?.jwt) return res.sendStatus(204); // No content
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+  });
+  res.json({ message: "Cookie cleared" });
 };
