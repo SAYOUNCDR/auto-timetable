@@ -2,6 +2,18 @@
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white) ![Express](https://img.shields.io/badge/Express-000000?logo=express&logoColor=white) ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white) ![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black) ![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white) ![npm](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=white)
 
+## 📚 Documentation
+
+For detailed API usage, testing workflows, and data insertion guides, please refer to the **[API Documentation](./API-Documentation.md)**.
+
+### Quick Links
+
+- [API Reference](./API-Documentation.md#api-reference)
+- [Data Seeding Guide](./API-Documentation.md#data-seeding-guide-postman)
+- [Testing Workflow](./API-Documentation.md#end-to-end-testing-workflow)
+
+---
+
 ## 🎯 Project Overview
 
 The **TimeTable Management & Generation System** is a sophisticated full-stack application designed to automate the complex process of academic scheduling. By leveraging AI-powered constraint programming (Google OR-Tools), it generates conflict-free timetables that respect resource availability, faculty constraints, and curriculum requirements.
@@ -82,18 +94,6 @@ cd frontend
 npm install
 npm run dev
 ```
-
----
-
-## 📚 Documentation
-
-For detailed API usage, testing workflows, and data insertion guides, please refer to the **[API Documentation](./API-Documentation.md)**.
-
-### Quick Links
-
-- [API Reference](./API-Documentation.md#api-reference)
-- [Data Seeding Guide](./API-Documentation.md#data-seeding-guide-postman)
-- [Testing Workflow](./API-Documentation.md#end-to-end-testing-workflow)
 
 ---
 
