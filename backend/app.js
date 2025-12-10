@@ -9,9 +9,9 @@ const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const timetableRoutes = require("./routes/timetableRoutes");
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(express.json()); // To parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // To parse URL-encoded bodies
+app.use(cookieParser()); // To parse cookies
 app.use(
   cors({
     origin: "http://localhost:5173", // Frontend URL
