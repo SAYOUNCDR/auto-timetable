@@ -4,6 +4,9 @@
 
 ## 📚 Documentation
 
+### Project Visual Guide
+[![Visualize in MapMyRepo](https://mapmyrepo.vasudev.live/badge.svg)](https://mapmyrepo.vasudev.live/?user=SAYOUNCDR&repo=auto-timetable)
+
 For detailed API usage, testing workflows, and data insertion guides, please refer to the **[API Documentation](./API-Documentation.md)**.
 
 ### Quick Links
