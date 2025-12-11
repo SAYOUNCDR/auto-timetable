@@ -8,6 +8,7 @@ const devRoutes = require("./routes/devRoutes");
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const timetableRoutes = require("./routes/timetableRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 app.use(express.json()); // To parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // To parse URL-encoded bodies
@@ -26,6 +27,7 @@ app.use("/api/dev", devRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/timetable", timetableRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 // Serve the simple admin view - this is temporary until frontend is ready
 app.get("/view/admin-timetable", (req, res) => {

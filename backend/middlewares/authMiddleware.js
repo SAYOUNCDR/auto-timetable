@@ -11,7 +11,7 @@ const verifyToken = (req, res, next) => {
     if (err) {
       return res.status(403).json({ message: "Forbidden: Invalid token" });
     }
-    req.user = decoded; // {id, role, email}
+    req.user = decoded; // {id, email, role}
     next();
   });
 };
