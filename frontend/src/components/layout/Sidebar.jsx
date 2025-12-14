@@ -35,12 +35,12 @@ const Sidebar = ({ isOpen, toggleSidebar, activePage, setActivePage }) => {
             !isOpen && "justify-center w-full"
           }`}
         >
-          <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white font-bold text-xl">
+          <div className="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center text-black font-bold text-xl shadow-sm">
             <CalanderSVG size={16} />
           </div>
           {isOpen && (
-            <span className="font-bold text-lg text-gray-800">
-              SmartScheduler
+            <span className="font-bold text-lg text-black tracking-wide">
+              Auto Gen
             </span>
           )}
         </div>
@@ -77,10 +77,10 @@ const Sidebar = ({ isOpen, toggleSidebar, activePage, setActivePage }) => {
           <button
             key={item.id}
             onClick={() => setActivePage(item.id)}
-            className={`flex items-center w-full p-3 rounded-lg transition-colors ${
+            className={`flex items-center w-full p-3 rounded-lg transition-all duration-200 ${
               activePage === item.id
-                ? "bg-black text-white"
-                : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                ? "bg-yellow-400 text-black font-medium shadow-sm"
+                : "text-gray-500 hover:bg-yellow-50 hover:text-yellow-700"
             } ${!isOpen && "justify-center"}`}
           >
             {item.icon}
@@ -109,7 +109,7 @@ const Sidebar = ({ isOpen, toggleSidebar, activePage, setActivePage }) => {
           )}
         </div>
         {isOpen && (
-          <button className="flex items-center gap-2 mt-4 text-gray-500 hover:text-red-500 text-sm px-2">
+          <button className="flex items-center gap-2 mt-4 text-gray-500 hover:text-red-500 text-sm px-2 transition-colors">
             <LogOut size={16} /> <span>Sign out</span>
           </button>
         )}
