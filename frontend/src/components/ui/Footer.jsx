@@ -1,4 +1,4 @@
-import { CalanderSVG } from "./Navbar";
+import CalanderSVG from "../Logos/CalanderSVG";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
