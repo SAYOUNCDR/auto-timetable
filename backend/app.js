@@ -35,7 +35,7 @@ app.get("/view/admin-timetable", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.json({ message: "Ok server is healthy and running fine" });
+  res.json({ message: "Backend is healthy and running fine" });
 });
 
 module.exports = app;

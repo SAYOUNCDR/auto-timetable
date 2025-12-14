@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Landing from "./components/pages/Landing";
-import Login from "./components/pages/Login";
+import Landing from "./pages/public/Landing";
+import Login from "./pages/public/Login";
 import Navbar from "./components/ui/Navbar";
 import Footer from "./components/ui/Footer";
 
