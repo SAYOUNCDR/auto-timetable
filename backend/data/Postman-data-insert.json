@@ -625,6 +625,12 @@
             }
         ]
     },
+    "ADMIN_CREDENTIALS": {
+        "name": "Admin User",
+        "email": "admin@gmail.com",
+        "password": "admin123",
+        "role": "admin"
+    },
     "INSERTION_ORDER": [
         "1. Insert all CLASSROOMS (6 items)",
         "2. Insert all BATCHES (6 items)",
