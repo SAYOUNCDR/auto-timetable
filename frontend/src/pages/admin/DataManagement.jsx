@@ -5,9 +5,17 @@ import BatchCard from "../../components/cards/BatchCard";
 import SubjectCard from "../../components/cards/SubjectCard";
 import FacultyCard from "../../components/cards/FacultyCard";
 import { Button } from "../../components/ui/Button";
+import RoomModal from "./modals/RoomModal";
+import BatchModal from "./modals/BatchModal";
+import SubjectModal from "./modals/SubjectModal";
+import FacultyModal from "./modals/FacultyModal";
 
 const DataManagement = () => {
   const [activeTab, setActiveTab] = useState("classrooms");
+  const [isRoomModalOpen, setIsRoomModalOpen] = useState(false);
+  const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
+  const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
+  const [isFacultyModalOpen, setIsFacultyModalOpen] = useState(false);
 
   // Configuration for tabs
   const tabs = [
@@ -119,6 +127,22 @@ const DataManagement = () => {
     },
   ]);
 
+  const handleAddRoom = (newRoom) => {
+    setRooms([...rooms, { id: rooms.length + 1, ...newRoom }]);
+  };
+
+  const handleAddBatch = (newBatch) => {
+    setBatches([...batches, { id: batches.length + 1, ...newBatch }]);
+  };
+
+  const handleAddSubject = (newSubject) => {
+    setSubjects([...subjects, { id: subjects.length + 1, ...newSubject }]);
+  };
+
+  const handleAddFaculty = (newFaculty) => {
+    setFaculty([...faculty, { id: faculty.length + 1, ...newFaculty }]);
+  };
+
   return (
     <div className="flex flex-col h-full overflow-hidden bg-white">
       {/* Page Header & Tabs */}
@@ -156,7 +180,15 @@ const DataManagement = () => {
 
         {/* Action Bar */}
         <div className="py-6 flex justify-end">
-          <Button className="flex items-center gap-2">
+          <Button
+            className="flex items-center gap-2"
+            onClick={() => {
+              if (activeTab === "classrooms") setIsRoomModalOpen(true);
+              if (activeTab === "batches") setIsBatchModalOpen(true);
+              if (activeTab === "subjects") setIsSubjectModalOpen(true);
+              if (activeTab === "faculty") setIsFacultyModalOpen(true);
+            }}
+          >
             <Plus size={18} />
             <span>
               Add{" "}
@@ -245,6 +277,28 @@ const DataManagement = () => {
           </div>
         )}
       </div>
+
+      {/* Modals */}
+      <RoomModal
+        isOpen={isRoomModalOpen}
+        onClose={() => setIsRoomModalOpen(false)}
+        onSubmit={handleAddRoom}
+      />
+      <BatchModal
+        isOpen={isBatchModalOpen}
+        onClose={() => setIsBatchModalOpen(false)}
+        onSubmit={handleAddBatch}
+      />
+      <SubjectModal
+        isOpen={isSubjectModalOpen}
+        onClose={() => setIsSubjectModalOpen(false)}
+        onSubmit={handleAddSubject}
+      />
+      <FacultyModal
+        isOpen={isFacultyModalOpen}
+        onClose={() => setIsFacultyModalOpen(false)}
+        onSubmit={handleAddFaculty}
+      />
     </div>
   );
 };
