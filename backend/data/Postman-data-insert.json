@@ -628,8 +628,7 @@
     "ADMIN_CREDENTIALS": {
         "name": "Admin User",
         "email": "admin@gmail.com",
-        "password": "admin123",
-        "role": "admin"
+        "password": "admin123"
     },
     "INSERTION_ORDER": [
         "1. Insert all CLASSROOMS (6 items)",

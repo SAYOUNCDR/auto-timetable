@@ -37,7 +37,6 @@ exports.getAdminStats = async (req, res) => {
   }
 };
 
-// ...existing code...
 exports.getStudentDashboardData = async (req, res) => {
   try {
     const studentId = req.user.id;
@@ -105,7 +104,6 @@ exports.getStudentDashboardData = async (req, res) => {
   }
 };
 
-// ...existing code...
 exports.getFacultyDashboardData = async (req, res) => {
   try {
     const facultyId = req.user.id;
