@@ -7,7 +7,7 @@ const CalanderSVG = ({ size = 24 }) => {
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="inline-flex items-center justify-center"
+      className="inline-flex items-center justify-center cursor-pointer"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

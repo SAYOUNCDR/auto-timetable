@@ -3,6 +3,7 @@ import { LayoutDashboard, FileText, User, Plus, Users } from "lucide-react";
 import RoomCard from "../../components/cards/RoomCard"; // Importing the separate component
 import BatchCard from "../../components/cards/BatchCard";
 import SubjectCard from "../../components/cards/SubjectCard";
+import FacultyCard from "../../components/cards/FacultyCard";
 import { Button } from "../../components/ui/Button";
 
 const DataManagement = () => {
@@ -88,6 +89,34 @@ const DataManagement = () => {
     { id: 4, code: "CS201L", name: "DS Lab", sessions: 2, isLab: true },
     { id: 5, code: "CS301", name: "Node", sessions: 4, isLab: false },
     { id: 6, code: "CS302", name: "React", sessions: 8, isLab: false },
+  ]);
+
+  // Dummy Data for Faculty
+  const [faculty, setFaculty] = useState([
+    {
+      id: 1,
+      name: "Dr. A. Sharma",
+      maxClasses: 3,
+      subjects: ["CS201", "CS201L"],
+    },
+    {
+      id: 2,
+      name: "Prof. B. John",
+      maxClasses: 4,
+      subjects: ["CS202", "CS203"],
+    },
+    {
+      id: 3,
+      name: "Dr. C. Gupta",
+      maxClasses: 3,
+      subjects: ["CS203", "CS201L"],
+    },
+    {
+      id: 4,
+      name: "Node Teacher",
+      maxClasses: 4,
+      subjects: ["CS202", "CS203"],
+    },
   ]);
 
   return (
@@ -201,10 +230,18 @@ const DataManagement = () => {
           </div>
         )}
 
-        {/* VIEW: Faculty (Placeholder) */}
+        {/* VIEW: Faculty */}
         {activeTab === "faculty" && (
-          <div className="bg-white p-12 rounded-xl border border-dashed border-gray-300 text-center text-gray-500">
-            Insert FacultyForm Component Here
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {faculty.map((fac) => (
+              <FacultyCard
+                key={fac.id}
+                name={fac.name}
+                maxClasses={fac.maxClasses}
+                subjects={fac.subjects}
+                onDelete={() => console.log(`Delete ${fac.name}`)}
+              />
+            ))}
           </div>
         )}
       </div>

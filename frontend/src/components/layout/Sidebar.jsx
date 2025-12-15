@@ -29,23 +29,23 @@ const Sidebar = ({ isOpen, toggleSidebar, activePage, setActivePage }) => {
       }`}
     >
       {/* Logo Area */}
-      <div className="flex items-center justify-between pt-8 pb-6">
+      <div className="flex items-center justify-between pt-8 pb-6 px-6">
         <div
           className={`flex items-center gap-2 ${
             !isOpen && "justify-center w-full"
           }`}
         >
-          <CalanderSVG size={25} />
+          <CalanderSVG size={25}/>
 
           {isOpen && (
-            <span className="font-bold text-lg text-black tracking-wide">
+            <span className="font-bold text-lg text-black tracking-wide cursor-pointer">
               Auto Gen
             </span>
           )}
         </div>
         <button
           onClick={toggleSidebar}
-          className={`p-1.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-600 ${
+          className={`p-1.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-600 cursor-pointer ${
             !isOpen ? "hidden" : "block"
           }`}
         >
@@ -58,7 +58,7 @@ const Sidebar = ({ isOpen, toggleSidebar, activePage, setActivePage }) => {
         <div className="flex justify-center py-4">
           <button
             onClick={toggleSidebar}
-            className="p-2 hover:bg-gray-100 rounded-md"
+            className="p-2 hover:bg-gray-100 rounded-md cursor-pointer"
           >
             <Menu size={20} />
           </button>
@@ -76,7 +76,7 @@ const Sidebar = ({ isOpen, toggleSidebar, activePage, setActivePage }) => {
           <button
             key={item.id}
             onClick={() => setActivePage(item.id)}
-            className={`flex items-center w-full p-3 rounded-lg transition-all duration-200 ${
+            className={`flex items-center w-full p-3 rounded-lg transition-all duration-200  cursor-pointer ${
               activePage === item.id
                 ? "bg-yellow-400 text-black font-medium shadow-sm"
                 : "text-gray-500 hover:bg-yellow-50 hover:text-yellow-700"
