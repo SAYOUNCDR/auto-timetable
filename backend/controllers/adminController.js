@@ -193,3 +193,151 @@ exports.getAllStudents = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+
+// Update controllers
+// Classroom
+exports.updateClassroom = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedClassroom = await Classroom.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (!updatedClassroom)
+      return res.status(404).json({ message: "Classroom not found" });
+    res.json(updatedClassroom);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+// Faculty
+exports.updateFaculty = async (req, res) => {
+  try {
+    const { id } = req.params;
+    // If updating password, hash it first (logic omitted for brevity, assume separate route or handle here)
+    if (req.body.password) {
+      req.body.hashedPassword = await bcrypt.hash(req.body.password, 10);
+      delete req.body.password;
+    }
+    const updatedFaculty = await Faculty.findByIdAndUpdate(id, req.body, {
+      new: true,
+    }).select("-hashedPassword");
+    if (!updatedFaculty)
+      return res.status(404).json({ message: "Faculty not found" });
+    res.json(updatedFaculty);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Student
+exports.updateStudent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (req.body.password) {
+      req.body.hashedPassword = await bcrypt.hash(req.body.password, 10);
+      delete req.body.password;
+    }
+    const updatedStudent = await Student.findByIdAndUpdate(id, req.body, {
+      new: true,
+    }).select("-hashedPassword");
+    if (!updatedStudent)
+      return res.status(404).json({ message: "Student not found" });
+    res.json(updatedStudent);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Batch
+exports.updateBatch = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedBatch = await Batch.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (!updatedBatch)
+      return res.status(404).json({ message: "Batch not found" });
+    res.json(updatedBatch);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Subject
+exports.updateSubject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedSubject = await Subject.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (!updatedSubject)
+      return res.status(404).json({ message: "Subject not found" });
+    res.json(updatedSubject);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+// Delete controllers
+exports.deleteClassroom = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedClassroom = await Classroom.findByIdAndDelete(id);
+    if (!deletedClassroom)
+      return res.status(404).json({ message: "Classroom not found" });
+    res.json({ message: "Classroom deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+exports.deleteBatch = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedBatch = await Batch.findByIdAndDelete(id);
+    if (!deletedBatch)
+      return res.status(404).json({ message: "Batch not found" });
+    res.json({ message: "Batch deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteSubject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedSubject = await Subject.findByIdAndDelete(id);
+    if (!deletedSubject)
+      return res.status(404).json({ message: "Subject not found" });
+    res.json({ message: "Subject deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteFaculty = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedFaculty = await Faculty.findByIdAndDelete(id);
+    if (!deletedFaculty)
+      return res.status(404).json({ message: "Faculty not found" });
+    res.json({ message: "Faculty deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteStudent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedStudent = await Student.findByIdAndDelete(id);
+    if (!deletedStudent)
+      return res.status(404).json({ message: "Student not found" });
+    res.json({ message: "Student deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
