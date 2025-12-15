@@ -14,4 +14,13 @@ router.post("/subject", adminController.createSubject);
 router.post("/faculty", adminController.createFaculty);
 router.post("/student", adminController.createStudent);
 
+
+router.get("/classroom", adminController.getAllClassrooms);
+router.get("/batch", adminController.getAllBatches);
+router.get("/subject", adminController.getAllSubjects);
+router.get("/faculty", adminController.getAllFaculties);
+router.get("/student", adminController.getAllStudents);
+
+
+
 module.exports = router;

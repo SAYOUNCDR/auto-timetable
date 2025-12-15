@@ -137,3 +137,59 @@ exports.createStudent = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// 6. Get all classrooms
+exports.getAllClassrooms = async (req, res) => {
+  try {
+    const classrooms = await Classroom.find();
+    res.status(200).json(classrooms);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// 7. Get all batches
+exports.getAllBatches = async (req, res) => {
+  try {
+    // Populate subjects to show curriculum details if needed
+    const batches = await Batch.find().populate("subjects");
+    res.status(200).json(batches);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// 8. Get all subjects
+exports.getAllSubjects = async (req, res) => {
+  try {
+    const subjects = await Subject.find().populate("batch", "batchName");
+    res.status(200).json(subjects);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// 9. Get all faculties
+exports.getAllFaculties = async (req, res) => {
+  try {
+    // Exclude password from the result
+    const faculties = await Faculty.find()
+      .select("-hashedPassword")
+      .populate("qualifiedSubjects", "subjectName subjectCode");
+    res.status(200).json(faculties);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// 10. Get all students
+exports.getAllStudents = async (req, res) => {
+  try {
+    const students = await Student.find()
+      .select("-hashedPassword")
+      .populate("batch", "batchName");
+    res.status(200).json(students);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
