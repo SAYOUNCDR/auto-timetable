@@ -4,7 +4,7 @@ const { verifyToken, verifyAdmin } = require("../middlewares/authMiddleware");
 const dashboardController = require("../controllers/dashboardController");
 
 // Admin Dashboard Stats
-router.get("/admin/stats", verifyToken, verifyAdmin, dashboardController.getAdminStats);
+router.get("/admin/data", verifyToken, verifyAdmin, dashboardController.getAdminStats);
 
 // Student Dashboard Data
 router.get("/student/data", verifyToken, dashboardController.getStudentDashboardData);

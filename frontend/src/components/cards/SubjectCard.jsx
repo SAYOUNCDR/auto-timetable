@@ -20,23 +20,8 @@ const SubjectCard = ({ code, name, sessions, isLab, onDelete }) => {
       </div>
 
       {/* Type (Lab Checkbox) */}
-      <div className="col-span-2 flex items-center gap-3">
-        <div
-          className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-            isLab
-              ? "bg-yellow-400 border-yellow-400 text-black"
-              : "border-gray-300 bg-gray-50"
-          }`}
-        >
-          {isLab && <Check size={12} strokeWidth={3} />}
-        </div>
-        <span
-          className={`text-sm font-medium ${
-            isLab ? "text-gray-900" : "text-gray-500"
-          }`}
-        >
-          Lab
-        </span>
+      <div className="col-span-2 flex items-center border p-2 rounded-md bg-gray-50">
+       Lab
       </div>
 
       {/* Actions */}

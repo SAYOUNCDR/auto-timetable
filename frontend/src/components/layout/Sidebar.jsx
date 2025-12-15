@@ -29,15 +29,14 @@ const Sidebar = ({ isOpen, toggleSidebar, activePage, setActivePage }) => {
       }`}
     >
       {/* Logo Area */}
-      <div className="flex items-center justify-between p-6 border-b border-gray-100">
+      <div className="flex items-center justify-between pt-8 pb-6">
         <div
           className={`flex items-center gap-2 ${
             !isOpen && "justify-center w-full"
           }`}
         >
-          <div className="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center text-black font-bold text-xl shadow-sm">
-            <CalanderSVG size={16} />
-          </div>
+          <CalanderSVG size={25} />
+
           {isOpen && (
             <span className="font-bold text-lg text-black tracking-wide">
               Auto Gen
