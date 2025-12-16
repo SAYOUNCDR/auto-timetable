@@ -20,19 +20,16 @@ router.get("/subject", adminController.getAllSubjects);
 router.get("/faculty", adminController.getAllFaculties);
 router.get("/student", adminController.getAllStudents);
 
-router.put("/classroom/:id", adminController.updateClassroom);
 router.delete("/classroom/:id", adminController.deleteClassroom);
-
-router.put("/batch/:id", adminController.updateBatch);
 router.delete("/batch/:id", adminController.deleteBatch);
-
-router.put("/subject/:id", adminController.updateSubject);
 router.delete("/subject/:id", adminController.deleteSubject);
-
-router.put("/faculty/:id", adminController.updateFaculty);
 router.delete("/faculty/:id", adminController.deleteFaculty);
-
-router.put("/student/:id", adminController.updateStudent);
 router.delete("/student/:id", adminController.deleteStudent);
+
+router.put("/classroom/:id", adminController.updateClassroom);
+router.put("/batch/:id", adminController.updateBatch);
+router.put("/subject/:id", adminController.updateSubject);
+router.put("/faculty/:id", adminController.updateFaculty);
+router.put("/student/:id", adminController.updateStudent);
 
 module.exports = router;
