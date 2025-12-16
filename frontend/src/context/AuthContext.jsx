@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   const handleAuthSuccess = (accessToken) => {
     setToken(accessToken);
     setAuthToken(accessToken); // Sync with Axios
-    
+
     try {
       const decoded = jwtDecode(accessToken);
       setUser({

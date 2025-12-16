@@ -100,7 +100,24 @@ export const updateStudent = async ({ id, ...data }) => {
   return response.data;
 };
 
+// --- Dashboard ---
+export const fetchDashboardStats = async () => {
+  const response = await axios.get("/dashboard/admin/data");
+  return response.data;
+};
+
 export const deleteStudent = async (id) => {
   const response = await axios.delete(`/admin/student/${id}`);
+  return response.data;
+};
+
+// --- Timetable ---
+export const generateTimetable = async () => {
+  const response = await axios.post("/timetable/generate");
+  return response.data;
+};
+
+export const fetchTimetable = async () => {
+  const response = await axios.get("/timetable/all");
   return response.data;
 };

@@ -9,12 +9,14 @@ import {
   Menu,
 } from "lucide-react";
 import CalanderSVG from "../Logos/CalanderSVG";
+import { useAuth } from "../../context/AuthContext";
 
 const Sidebar = ({ isOpen, toggleSidebar, activePage, setActivePage }) => {
+  const { user, logout } = useAuth();
   const menuItems = [
     {
-      id: "dashboard",
-      label: "Dashboard",
+      id: "All details",
+      label: "All Details",
       icon: <LayoutDashboard size={20} />,
     },
     { id: "data", label: "Data Management", icon: <Database size={20} /> },
@@ -35,7 +37,7 @@ const Sidebar = ({ isOpen, toggleSidebar, activePage, setActivePage }) => {
             !isOpen && "justify-center w-full"
           }`}
         >
-          <CalanderSVG size={25}/>
+          <CalanderSVG size={25} />
 
           {isOpen && (
             <span className="font-bold text-lg text-black tracking-wide cursor-pointer">
@@ -99,16 +101,24 @@ const Sidebar = ({ isOpen, toggleSidebar, activePage, setActivePage }) => {
             <User size={20} />
           </div>
           {isOpen && (
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <p className="text-xs text-gray-400 uppercase font-semibold">
-                Current Role
+                {user?.role || "Role"}
               </p>
-              <p className="text-sm font-bold text-gray-800">Admin</p>
+              <p
+                className="text-sm font-bold text-gray-800 truncate"
+                title={user?.email}
+              >
+                {user?.email || "User"}
+              </p>
             </div>
           )}
         </div>
         {isOpen && (
-          <button className="flex items-center gap-2 mt-4 text-gray-500 hover:text-red-500 text-sm px-2 transition-colors">
+          <button
+            onClick={logout}
+            className="flex items-center gap-2 mt-4 text-gray-500 hover:text-red-500 text-sm px-2 transition-colors w-full text-left"
+          >
             <LogOut size={16} /> <span>Sign out</span>
           </button>
         )}
