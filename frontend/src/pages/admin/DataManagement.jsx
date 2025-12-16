@@ -282,7 +282,6 @@ const DataManagement = () => {
           </div>
         )}
       </div>
-      isLoading={createBatchMutation.isPending}
       {/* Modals */}
       <RoomModal
         isOpen={isRoomModalOpen}
