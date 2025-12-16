@@ -10,9 +10,17 @@ import {
 } from "lucide-react";
 import CalanderSVG from "../Logos/CalanderSVG";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ isOpen, toggleSidebar, activePage, setActivePage }) => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
+
   const menuItems = [
     {
       id: "All details",
@@ -116,7 +124,7 @@ const Sidebar = ({ isOpen, toggleSidebar, activePage, setActivePage }) => {
         </div>
         {isOpen && (
           <button
-            onClick={logout}
+            onClick={handleLogout}
             className="flex items-center gap-2 mt-4 text-gray-500 hover:text-red-500 text-sm px-2 transition-colors w-full text-left"
           >
             <LogOut size={16} /> <span>Sign out</span>
