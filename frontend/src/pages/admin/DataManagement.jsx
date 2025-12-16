@@ -224,11 +224,49 @@ const DataManagement = () => {
     }
   };
 
-  const handleAddBatch = (batchData) => {
-    if (itemToEdit) {
-      updateBatchMutation.mutate({ id: itemToEdit._id, ...batchData });
-    } else {
-      createBatchMutation.mutate(batchData);
+  const handleAddBatch = async ({
+    batchData,
+    addedSubjects,
+    deletedSubjectIds,
+  }) => {
+    try {
+      if (itemToEdit) {
+        // 1. Update Batch
+        await updateBatchMutation.mutateAsync({
+          id: itemToEdit._id,
+          ...batchData,
+        });
+
+        // 2. Delete removed subjects
+        if (deletedSubjectIds && deletedSubjectIds.length > 0) {
+          for (const subId of deletedSubjectIds) {
+            await deleteSubjectMutation.mutateAsync(subId);
+          }
+        }
+
+        // 3. Add new subjects
+        if (addedSubjects && addedSubjects.length > 0) {
+          for (const sub of addedSubjects) {
+            await createSubjectMutation.mutateAsync(sub);
+          }
+        }
+      } else {
+        // 1. Create Batch
+        await createBatchMutation.mutateAsync(batchData);
+
+        // 2. Add subjects (now that batch exists)
+        if (addedSubjects && addedSubjects.length > 0) {
+          for (const sub of addedSubjects) {
+            await createSubjectMutation.mutateAsync(sub);
+          }
+        }
+      }
+      // Refresh all data
+      queryClient.invalidateQueries(["batches"]);
+      queryClient.invalidateQueries(["subjects"]);
+    } catch (error) {
+      console.error("Error managing batch:", error);
+      // Ideally show an error toast here
     }
   };
 
@@ -427,12 +465,14 @@ const DataManagement = () => {
         onClose={() => setIsBatchModalOpen(false)}
         onSubmit={handleAddBatch}
         initialData={itemToEdit}
+        allSubjects={subjects}
       />
       <SubjectModal
         isOpen={isSubjectModalOpen}
         onClose={() => setIsSubjectModalOpen(false)}
         onSubmit={handleAddSubject}
         initialData={itemToEdit}
+        batches={batches}
       />
       <FacultyModal
         isOpen={isFacultyModalOpen}

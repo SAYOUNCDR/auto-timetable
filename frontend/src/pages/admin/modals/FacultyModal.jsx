@@ -5,6 +5,8 @@ import { Button } from "../../../components/ui/Button";
 const FacultyModal = ({ isOpen, onClose, onSubmit, initialData }) => {
   const [formData, setFormData] = useState({
     name: "",
+    email: "",
+    password: "",
     maxClasses: "",
     subjects: "", // Comma separated string for input
   });
@@ -14,6 +16,8 @@ const FacultyModal = ({ isOpen, onClose, onSubmit, initialData }) => {
       if (initialData) {
         setFormData({
           name: initialData.name || "",
+          email: initialData.email || "",
+          password: "", // Don't pre-fill password
           maxClasses: initialData.maxClassesPerDay || "",
           subjects: initialData.qualifiedSubjects
             ? initialData.qualifiedSubjects
@@ -24,6 +28,8 @@ const FacultyModal = ({ isOpen, onClose, onSubmit, initialData }) => {
       } else {
         setFormData({
           name: "",
+          email: "",
+          password: "",
           maxClasses: "",
           subjects: "",
         });
@@ -44,11 +50,19 @@ const FacultyModal = ({ isOpen, onClose, onSubmit, initialData }) => {
       .map((s) => s.trim())
       .filter((s) => s.length > 0);
 
-    onSubmit({
+    const submitData = {
       name: formData.name,
+      email: formData.email,
       maxClassesPerDay: parseInt(formData.maxClasses),
       qualifiedSubjectCodes: subjectsArray,
-    });
+    };
+
+    // Only include password if it's provided (required for new, optional for edit)
+    if (formData.password) {
+      submitData.password = formData.password;
+    }
+
+    onSubmit(submitData);
     onClose();
   };
 
@@ -86,6 +100,46 @@ const FacultyModal = ({ isOpen, onClose, onSubmit, initialData }) => {
               placeholder="e.g. Dr. A. Sharma"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
               required
+            />
+          </div>
+
+          {/* Email */}
+          <div className="space-y-1.5">
+            <label
+              htmlFor="email"
+              className="text-sm font-medium text-gray-700"
+            >
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="e.g. faculty@example.com"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              required
+            />
+          </div>
+
+          {/* Password */}
+          <div className="space-y-1.5">
+            <label
+              htmlFor="password"
+              className="text-sm font-medium text-gray-700"
+            >
+              Password {initialData && "(Leave blank to keep current)"}
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="••••••••"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              required={!initialData}
             />
           </div>
 

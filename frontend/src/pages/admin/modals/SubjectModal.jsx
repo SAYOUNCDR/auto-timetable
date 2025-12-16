@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { Button } from "../../../components/ui/Button";
 
-const SubjectModal = ({ isOpen, onClose, onSubmit, initialData }) => {
+const SubjectModal = ({ isOpen, onClose, onSubmit, initialData, batches }) => {
   const [formData, setFormData] = useState({
     code: "",
     name: "",
     sessions: "",
     isLab: false,
+    batchName: "",
+    requiredRoomType: "Classroom",
   });
 
   useEffect(() => {
@@ -18,6 +20,8 @@ const SubjectModal = ({ isOpen, onClose, onSubmit, initialData }) => {
           name: initialData.subjectName || "",
           sessions: initialData.sessionsPerWeek || "",
           isLab: initialData.type === "Practical",
+          batchName: initialData.batch?.batchName || "",
+          requiredRoomType: initialData.requiredRoomType || "Classroom",
         });
       } else {
         setFormData({
@@ -25,6 +29,8 @@ const SubjectModal = ({ isOpen, onClose, onSubmit, initialData }) => {
           name: "",
           sessions: "",
           isLab: false,
+          batchName: "",
+          requiredRoomType: "Classroom",
         });
       }
     }
@@ -45,6 +51,8 @@ const SubjectModal = ({ isOpen, onClose, onSubmit, initialData }) => {
       subjectName: formData.name,
       sessionsPerWeek: parseInt(formData.sessions),
       type: formData.isLab ? "Practical" : "Theory",
+      batchName: formData.batchName,
+      requiredRoomType: formData.requiredRoomType,
     });
     onClose();
   };
@@ -122,6 +130,53 @@ const SubjectModal = ({ isOpen, onClose, onSubmit, initialData }) => {
               required
               min="1"
             />
+          </div>
+
+          {/* Batch Selection */}
+          <div className="space-y-1.5">
+            <label
+              htmlFor="batchName"
+              className="text-sm font-medium text-gray-700"
+            >
+              Batch
+            </label>
+            <select
+              id="batchName"
+              name="batchName"
+              value={formData.batchName}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              required
+            >
+              <option value="">Select a Batch</option>
+              {batches &&
+                batches.map((batch) => (
+                  <option key={batch._id} value={batch.batchName}>
+                    {batch.batchName}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          {/* Required Room Type */}
+          <div className="space-y-1.5">
+            <label
+              htmlFor="requiredRoomType"
+              className="text-sm font-medium text-gray-700"
+            >
+              Required Room Type
+            </label>
+            <select
+              id="requiredRoomType"
+              name="requiredRoomType"
+              value={formData.requiredRoomType}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              required
+            >
+              <option value="Classroom">Classroom</option>
+              <option value="Laboratory">Laboratory</option>
+            </select>
           </div>
 
           {/* Is Lab */}

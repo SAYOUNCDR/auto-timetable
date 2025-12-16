@@ -277,11 +277,47 @@ exports.updateBatch = async (req, res) => {
 exports.updateSubject = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedSubject = await Subject.findByIdAndUpdate(id, req.body, {
+    const { batchName, ...updateData } = req.body;
+
+    // If batchName is provided, resolve it to batch ID
+    let newBatchId = null;
+    if (batchName) {
+      const newBatch = await Batch.findOne({ batchName });
+      if (!newBatch)
+        return res.status(404).json({ message: "Batch not found" });
+      newBatchId = newBatch._id;
+      updateData.batch = newBatchId;
+    }
+
+    const oldSubject = await Subject.findById(id);
+    if (!oldSubject)
+      return res.status(404).json({ message: "Subject not found" });
+
+    const updatedSubject = await Subject.findByIdAndUpdate(id, updateData, {
       new: true,
     });
-    if (!updatedSubject)
-      return res.status(404).json({ message: "Subject not found" });
+
+    // If batch changed, update references in Batch models
+    if (
+      newBatchId &&
+      oldSubject.batch &&
+      oldSubject.batch.toString() !== newBatchId.toString()
+    ) {
+      // Remove from old batch
+      await Batch.findByIdAndUpdate(oldSubject.batch, {
+        $pull: { subjects: id },
+      });
+      // Add to new batch
+      await Batch.findByIdAndUpdate(newBatchId, {
+        $addToSet: { subjects: id },
+      });
+    } else if (newBatchId && !oldSubject.batch) {
+      // If it didn't have a batch before (unlikely given schema, but safe)
+      await Batch.findByIdAndUpdate(newBatchId, {
+        $addToSet: { subjects: id },
+      });
+    }
+
     res.json(updatedSubject);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -318,6 +354,10 @@ exports.deleteSubject = async (req, res) => {
     const deletedSubject = await Subject.findByIdAndDelete(id);
     if (!deletedSubject)
       return res.status(404).json({ message: "Subject not found" });
+
+    // Remove subject reference from any batch that contains it
+    await Batch.updateMany({ subjects: id }, { $pull: { subjects: id } });
+
     res.json({ message: "Subject deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
