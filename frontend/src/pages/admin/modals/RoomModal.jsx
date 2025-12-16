@@ -1,13 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { Button } from "../../../components/ui/Button";
 
-const RoomModal = ({ isOpen, onClose, onSubmit }) => {
+const RoomModal = ({ isOpen, onClose, onSubmit, initialData }) => {
   const [formData, setFormData] = useState({
     name: "",
     capacity: "",
     type: "Classroom",
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      if (initialData) {
+        setFormData({
+          name: initialData.className || "",
+          capacity: initialData.capacity || "",
+          type: initialData.type || "Classroom",
+        });
+      } else {
+        setFormData({
+          name: "",
+          capacity: "",
+          type: "Classroom",
+        });
+      }
+    }
+  }, [isOpen, initialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,12 +34,10 @@ const RoomModal = ({ isOpen, onClose, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
-    // Reset form
-    setFormData({
-      name: "",
-      capacity: "",
-      type: "Classroom",
+    onSubmit({
+      className: formData.name,
+      capacity: formData.capacity,
+      type: formData.type,
     });
     onClose();
   };
@@ -33,7 +49,9 @@ const RoomModal = ({ isOpen, onClose, onSubmit }) => {
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden transform transition-all animate-in fade-in zoom-in duration-200">
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-          <h3 className="text-lg font-bold text-gray-900">Add New Room</h3>
+          <h3 className="text-lg font-bold text-gray-900">
+            {initialData ? "Edit Room" : "Add New Room"}
+          </h3>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"

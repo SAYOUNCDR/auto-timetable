@@ -1,6 +1,6 @@
 import { Trash2, Pencil, Users, Building2 } from "lucide-react";
 
-const RoomCard = ({ name, capacity, type, onTypeChange, onDelete }) => {
+const RoomCard = ({ name, capacity, type, onTypeChange, onDelete, onEdit }) => {
   return (
     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-inner mt-4 relative overflow-hidden">
       {/* Header Section */}
@@ -17,6 +17,7 @@ const RoomCard = ({ name, capacity, type, onTypeChange, onDelete }) => {
         {/* Actions */}
         <div className="flex gap-1">
           <button
+            onClick={onEdit}
             className="p-2 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer"
             title="Edit"
           >

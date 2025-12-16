@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { X, Plus, Trash2 } from "lucide-react";
 import { Button } from "../../../components/ui/Button";
 
-const BatchModal = ({ isOpen, onClose, onSubmit }) => {
+const BatchModal = ({ isOpen, onClose, onSubmit, initialData }) => {
   const [formData, setFormData] = useState({
     name: "",
     students: "",
@@ -10,6 +10,29 @@ const BatchModal = ({ isOpen, onClose, onSubmit }) => {
   });
 
   const [newSubject, setNewSubject] = useState({ name: "", hours: "" });
+
+  useEffect(() => {
+    if (isOpen) {
+      if (initialData) {
+        setFormData({
+          name: initialData.batchName || "",
+          students: initialData.strength || "",
+          curriculum: initialData.subjects
+            ? initialData.subjects.map((sub) => ({
+                name: sub.subjectName,
+                hours: sub.sessionsPerWeek,
+              }))
+            : [],
+        });
+      } else {
+        setFormData({
+          name: "",
+          students: "",
+          curriculum: [],
+        });
+      }
+    }
+  }, [isOpen, initialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,8 +67,10 @@ const BatchModal = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({
-      ...formData,
-      students: parseInt(formData.students),
+      batchName: formData.name,
+      strength: parseInt(formData.students),
+      // curriculum is not directly supported by createBatch/updateBatch in the current backend
+      // subjects need to be created separately or backend needs update
     });
     // Reset form
     setFormData({
@@ -63,7 +88,9 @@ const BatchModal = ({ isOpen, onClose, onSubmit }) => {
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden transform transition-all animate-in fade-in zoom-in duration-200 max-h-[90vh] flex flex-col">
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-          <h3 className="text-lg font-bold text-gray-900">Add New Batch</h3>
+          <h3 className="text-lg font-bold text-gray-900">
+            {initialData ? "Edit Batch" : "Add New Batch"}
+          </h3>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"

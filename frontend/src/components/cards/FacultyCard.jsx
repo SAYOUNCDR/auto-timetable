@@ -1,7 +1,7 @@
 import React from "react";
 import { Trash2, Pencil, Briefcase, BookOpen } from "lucide-react";
 
-const FacultyCard = ({ name, maxClasses, subjects, onDelete }) => {
+const FacultyCard = ({ name, maxClasses, subjects, onDelete, onEdit }) => {
   return (
     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-inner mt-4 relative overflow-hidden">
       {/* Header Section */}
@@ -18,6 +18,7 @@ const FacultyCard = ({ name, maxClasses, subjects, onDelete }) => {
         {/* Actions */}
         <div className="flex gap-1">
           <button
+            onClick={onEdit}
             className="p-2 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer"
             title="Edit"
           >

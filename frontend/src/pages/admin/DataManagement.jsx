@@ -14,6 +14,10 @@ import {
   deleteClassroom,
   deleteSubject,
   deleteFaculty,
+  updateBatch,
+  updateClassroom,
+  updateSubject,
+  updateFaculty,
 } from "../../services/api";
 import RoomCard from "../../components/cards/RoomCard"; // Importing the separate component
 import BatchCard from "../../components/cards/BatchCard";
@@ -32,6 +36,9 @@ const DataManagement = () => {
   const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
   const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
   const [isFacultyModalOpen, setIsFacultyModalOpen] = useState(false);
+
+  // Edit State
+  const [itemToEdit, setItemToEdit] = useState(null);
 
   // Delete Modal State
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -67,6 +74,15 @@ const DataManagement = () => {
     },
   });
 
+  const updateRoomMutation = useMutation({
+    mutationFn: updateClassroom,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["classrooms"]);
+      setIsRoomModalOpen(false);
+      setItemToEdit(null);
+    },
+  });
+
   // --- Batches ---
   const { data: batches = [], isLoading: loadingBatches } = useQuery({
     queryKey: ["batches"],
@@ -79,6 +95,15 @@ const DataManagement = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["batches"]);
       setIsBatchModalOpen(false);
+    },
+  });
+
+  const updateBatchMutation = useMutation({
+    mutationFn: updateBatch,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["batches"]);
+      setIsBatchModalOpen(false);
+      setItemToEdit(null);
     },
   });
 
@@ -97,6 +122,15 @@ const DataManagement = () => {
     },
   });
 
+  const updateSubjectMutation = useMutation({
+    mutationFn: updateSubject,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["subjects"]);
+      setIsSubjectModalOpen(false);
+      setItemToEdit(null);
+    },
+  });
+
   // --- Faculty ---
   const { data: faculty = [], isLoading: loadingFaculty } = useQuery({
     queryKey: ["faculty"],
@@ -109,6 +143,15 @@ const DataManagement = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["faculty"]);
       setIsFacultyModalOpen(false);
+    },
+  });
+
+  const updateFacultyMutation = useMutation({
+    mutationFn: updateFaculty,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["faculty"]);
+      setIsFacultyModalOpen(false);
+      setItemToEdit(null);
     },
   });
 
@@ -165,20 +208,44 @@ const DataManagement = () => {
     }
   };
 
-  const handleAddRoom = (newRoom) => {
-    createRoomMutation.mutate(newRoom);
+  const handleEditClick = (item, type) => {
+    setItemToEdit(item);
+    if (type === "room") setIsRoomModalOpen(true);
+    if (type === "batch") setIsBatchModalOpen(true);
+    if (type === "subject") setIsSubjectModalOpen(true);
+    if (type === "faculty") setIsFacultyModalOpen(true);
   };
 
-  const handleAddBatch = (newBatch) => {
-    createBatchMutation.mutate(newBatch);
+  const handleAddRoom = (roomData) => {
+    if (itemToEdit) {
+      updateRoomMutation.mutate({ id: itemToEdit._id, ...roomData });
+    } else {
+      createRoomMutation.mutate(roomData);
+    }
   };
 
-  const handleAddSubject = (newSubject) => {
-    createSubjectMutation.mutate(newSubject);
+  const handleAddBatch = (batchData) => {
+    if (itemToEdit) {
+      updateBatchMutation.mutate({ id: itemToEdit._id, ...batchData });
+    } else {
+      createBatchMutation.mutate(batchData);
+    }
   };
 
-  const handleAddFaculty = (newFaculty) => {
-    createFacultyMutation.mutate(newFaculty);
+  const handleAddSubject = (subjectData) => {
+    if (itemToEdit) {
+      updateSubjectMutation.mutate({ id: itemToEdit._id, ...subjectData });
+    } else {
+      createSubjectMutation.mutate(subjectData);
+    }
+  };
+
+  const handleAddFaculty = (facultyData) => {
+    if (itemToEdit) {
+      updateFacultyMutation.mutate({ id: itemToEdit._id, ...facultyData });
+    } else {
+      createFacultyMutation.mutate(facultyData);
+    }
   };
 
   return (
@@ -221,6 +288,7 @@ const DataManagement = () => {
           <Button
             className="flex items-center gap-2"
             onClick={() => {
+              setItemToEdit(null);
               if (activeTab === "classrooms") setIsRoomModalOpen(true);
               if (activeTab === "batches") setIsBatchModalOpen(true);
               if (activeTab === "subjects") setIsSubjectModalOpen(true);
@@ -254,6 +322,7 @@ const DataManagement = () => {
                     console.log(`Updated ${room.className} to ${newType}`);
                   }}
                   onDelete={() => handleDeleteClick(room, "classroom")}
+                  onEdit={() => handleEditClick(room, "room")}
                 />
               ))
             )}
@@ -280,6 +349,7 @@ const DataManagement = () => {
                       : []
                   }
                   onDelete={() => handleDeleteClick(batch, "batch")}
+                  onEdit={() => handleEditClick(batch, "batch")}
                 />
               ))
             )}
@@ -311,6 +381,7 @@ const DataManagement = () => {
                     sessions={subject.sessionsPerWeek}
                     isLab={subject.type === "Practical"}
                     onDelete={() => handleDeleteClick(subject, "subject")}
+                    onEdit={() => handleEditClick(subject, "subject")}
                   />
                 ))
               )}
@@ -337,6 +408,7 @@ const DataManagement = () => {
                       : []
                   }
                   onDelete={() => handleDeleteClick(fac, "faculty")}
+                  onEdit={() => handleEditClick(fac, "faculty")}
                 />
               ))
             )}
@@ -348,21 +420,25 @@ const DataManagement = () => {
         isOpen={isRoomModalOpen}
         onClose={() => setIsRoomModalOpen(false)}
         onSubmit={handleAddRoom}
+        initialData={itemToEdit}
       />
       <BatchModal
         isOpen={isBatchModalOpen}
         onClose={() => setIsBatchModalOpen(false)}
         onSubmit={handleAddBatch}
+        initialData={itemToEdit}
       />
       <SubjectModal
         isOpen={isSubjectModalOpen}
         onClose={() => setIsSubjectModalOpen(false)}
         onSubmit={handleAddSubject}
+        initialData={itemToEdit}
       />
       <FacultyModal
         isOpen={isFacultyModalOpen}
         onClose={() => setIsFacultyModalOpen(false)}
         onSubmit={handleAddFaculty}
+        initialData={itemToEdit}
       />
       <ConfirmationModal
         isOpen={isDeleteModalOpen}

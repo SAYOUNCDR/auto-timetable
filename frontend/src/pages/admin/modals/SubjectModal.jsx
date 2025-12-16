@@ -1,14 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { Button } from "../../../components/ui/Button";
 
-const SubjectModal = ({ isOpen, onClose, onSubmit }) => {
+const SubjectModal = ({ isOpen, onClose, onSubmit, initialData }) => {
   const [formData, setFormData] = useState({
     code: "",
     name: "",
     sessions: "",
     isLab: false,
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      if (initialData) {
+        setFormData({
+          code: initialData.subjectCode || "",
+          name: initialData.subjectName || "",
+          sessions: initialData.sessionsPerWeek || "",
+          isLab: initialData.type === "Practical",
+        });
+      } else {
+        setFormData({
+          code: "",
+          name: "",
+          sessions: "",
+          isLab: false,
+        });
+      }
+    }
+  }, [isOpen, initialData]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -21,15 +41,10 @@ const SubjectModal = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({
-      ...formData,
-      sessions: parseInt(formData.sessions),
-    });
-    // Reset form
-    setFormData({
-      code: "",
-      name: "",
-      sessions: "",
-      isLab: false,
+      subjectCode: formData.code,
+      subjectName: formData.name,
+      sessionsPerWeek: parseInt(formData.sessions),
+      type: formData.isLab ? "Practical" : "Theory",
     });
     onClose();
   };
@@ -41,7 +56,9 @@ const SubjectModal = ({ isOpen, onClose, onSubmit }) => {
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden transform transition-all animate-in fade-in zoom-in duration-200">
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-          <h3 className="text-lg font-bold text-gray-900">Add New Subject</h3>
+          <h3 className="text-lg font-bold text-gray-900">
+            {initialData ? "Edit Subject" : "Add New Subject"}
+          </h3>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"

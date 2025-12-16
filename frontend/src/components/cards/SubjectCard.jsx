@@ -1,7 +1,7 @@
 import React from "react";
 import { Trash2, Pencil, Check } from "lucide-react";
 
-const SubjectCard = ({ code, name, sessions, isLab, onDelete }) => {
+const SubjectCard = ({ code, name, sessions, isLab, onDelete, onEdit }) => {
   return (
     <div className="grid grid-cols-12 gap-4 items-center p-4 bg-white border-b border-gray-100 hover:bg-gray-50 transition-colors last:border-0 group">
       {/* Code */}
@@ -21,12 +21,13 @@ const SubjectCard = ({ code, name, sessions, isLab, onDelete }) => {
 
       {/* Type (Lab Checkbox) */}
       <div className="col-span-2 flex items-center border p-2 rounded-md bg-gray-50">
-       Lab
+        Lab
       </div>
 
       {/* Actions */}
       <div className="col-span-2 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
+          onClick={onEdit}
           className="p-2 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer"
           title="Edit"
         >

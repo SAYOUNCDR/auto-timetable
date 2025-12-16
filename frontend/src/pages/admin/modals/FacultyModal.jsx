@@ -1,13 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { Button } from "../../../components/ui/Button";
 
-const FacultyModal = ({ isOpen, onClose, onSubmit }) => {
+const FacultyModal = ({ isOpen, onClose, onSubmit, initialData }) => {
   const [formData, setFormData] = useState({
     name: "",
     maxClasses: "",
     subjects: "", // Comma separated string for input
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      if (initialData) {
+        setFormData({
+          name: initialData.name || "",
+          maxClasses: initialData.maxClassesPerDay || "",
+          subjects: initialData.qualifiedSubjects
+            ? initialData.qualifiedSubjects
+                .map((sub) => (typeof sub === "object" ? sub.subjectName : sub))
+                .join(", ")
+            : "",
+        });
+      } else {
+        setFormData({
+          name: "",
+          maxClasses: "",
+          subjects: "",
+        });
+      }
+    }
+  }, [isOpen, initialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,15 +46,8 @@ const FacultyModal = ({ isOpen, onClose, onSubmit }) => {
 
     onSubmit({
       name: formData.name,
-      maxClasses: parseInt(formData.maxClasses),
-      subjects: subjectsArray,
-    });
-
-    // Reset form
-    setFormData({
-      name: "",
-      maxClasses: "",
-      subjects: "",
+      maxClassesPerDay: parseInt(formData.maxClasses),
+      qualifiedSubjectCodes: subjectsArray,
     });
     onClose();
   };
@@ -44,7 +59,9 @@ const FacultyModal = ({ isOpen, onClose, onSubmit }) => {
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden transform transition-all animate-in fade-in zoom-in duration-200">
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-          <h3 className="text-lg font-bold text-gray-900">Add New Faculty</h3>
+          <h3 className="text-lg font-bold text-gray-900">
+            {initialData ? "Edit Faculty" : "Add New Faculty"}
+          </h3>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"

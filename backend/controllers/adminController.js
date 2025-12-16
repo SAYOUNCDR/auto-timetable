@@ -194,8 +194,6 @@ exports.getAllStudents = async (req, res) => {
   }
 };
 
-
-
 // Update controllers
 // Classroom
 exports.updateClassroom = async (req, res) => {
@@ -215,6 +213,16 @@ exports.updateClassroom = async (req, res) => {
 exports.updateFaculty = async (req, res) => {
   try {
     const { id } = req.params;
+
+    // Handle qualifiedSubjectCodes if present
+    if (req.body.qualifiedSubjectCodes) {
+      const subjects = await Subject.find({
+        subjectCode: { $in: req.body.qualifiedSubjectCodes },
+      });
+      req.body.qualifiedSubjects = subjects.map((s) => s._id);
+      delete req.body.qualifiedSubjectCodes;
+    }
+
     // If updating password, hash it first (logic omitted for brevity, assume separate route or handle here)
     if (req.body.password) {
       req.body.hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -279,8 +287,6 @@ exports.updateSubject = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
 
 // Delete controllers
 exports.deleteClassroom = async (req, res) => {
