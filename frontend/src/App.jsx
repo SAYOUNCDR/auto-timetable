@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Landing from "./pages/public/Landing";
 import Dashboard from "./pages/admin/Dashboard";
+import StudentDashboard from "./pages/student/StudentDashboard";
+import FacultyDashboard from "./pages/faculty/FacultyDashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -16,20 +18,14 @@ function App() {
           <Route path="/admin/dashboard" element={<Dashboard />} />
         </Route>
 
-        {/* Faculty Routes (Placeholder) */}
+        {/* Faculty Routes */}
         <Route element={<ProtectedRoute allowedRoles={["faculty"]} />}>
-          <Route
-            path="/faculty/dashboard"
-            element={<div>Faculty Dashboard</div>}
-          />
+          <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
         </Route>
 
-        {/* Student Routes (Placeholder) */}
+        {/* Student Routes */}
         <Route element={<ProtectedRoute allowedRoles={["student"]} />}>
-          <Route
-            path="/student/dashboard"
-            element={<div>Student Dashboard</div>}
-          />
+          <Route path="/student/dashboard" element={<StudentDashboard />} />
         </Route>
       </Routes>
     </AuthProvider>

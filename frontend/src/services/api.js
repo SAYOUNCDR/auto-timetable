@@ -121,3 +121,25 @@ export const fetchTimetable = async () => {
   const response = await axios.get("/timetable/all");
   return response.data;
 };
+
+// --- Student ---
+export const fetchStudentDashboard = async () => {
+  const response = await axios.get("/dashboard/student/data");
+  return response.data;
+};
+
+export const fetchStudentTimetable = async () => {
+  const response = await axios.get("/timetable/student");
+  return response.data;
+};
+
+// --- Faculty ---
+export const fetchFacultyDashboard = async () => {
+  const response = await axios.get("/dashboard/faculty/data");
+  return response.data;
+};
+
+export const fetchFacultyTimetable = async () => {
+  const response = await axios.get("/timetable/teacher");
+  return response.data;
+};

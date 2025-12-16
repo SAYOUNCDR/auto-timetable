@@ -68,6 +68,7 @@ const TimetableGrid = ({
   batches = [],
   selectedBatchId,
   onBatchSelect,
+  showControls = true,
 }) => {
   const [activeDay, setActiveDay] = useState(0); // 0 = Monday
 
@@ -75,7 +76,7 @@ const TimetableGrid = ({
 
   // 1. Filter data based on selection
   const filteredData = useMemo(() => {
-    if (selectedBatchId === "all") {
+    if (selectedBatchId === "all" || selectedBatchId === "student") {
       return timetableData;
     }
     return timetableData.filter((t) => t.batch?._id === selectedBatchId);
@@ -223,43 +224,45 @@ const TimetableGrid = ({
   return (
     <div className="space-y-6">
       {/* Controls */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-yellow-100 text-yellow-700 rounded-lg">
-            <Calendar size={20} />
+      {showControls && (
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-yellow-100 text-yellow-700 rounded-lg">
+              <Calendar size={20} />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">
+                {selectedBatchId === "all"
+                  ? "Master Schedule"
+                  : "Batch Timetable"}
+              </h2>
+              <p className="text-xs text-gray-500">
+                {selectedBatchId === "all"
+                  ? `Viewing all ${batches.length} batches for ${DAYS[activeDay]}`
+                  : "Viewing weekly schedule"}
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-lg font-bold text-gray-900">
-              {selectedBatchId === "all"
-                ? "Master Schedule"
-                : "Batch Timetable"}
-            </h2>
-            <p className="text-xs text-gray-500">
-              {selectedBatchId === "all"
-                ? `Viewing all ${batches.length} batches for ${DAYS[activeDay]}`
-                : "Viewing weekly schedule"}
-            </p>
-          </div>
-        </div>
 
-        <div className="flex items-center gap-2 w-full sm:w-auto">
-          <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
-            Filter by Batch:
-          </label>
-          <select
-            value={selectedBatchId}
-            onChange={(e) => onBatchSelect(e.target.value)}
-            className="w-full sm:w-64 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-sm"
-          >
-            <option value="all">All Batches (Master View)</option>
-            {batches.map((b) => (
-              <option key={b._id} value={b._id}>
-                {b.batchName}
-              </option>
-            ))}
-          </select>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
+              Filter by Batch:
+            </label>
+            <select
+              value={selectedBatchId}
+              onChange={(e) => onBatchSelect(e.target.value)}
+              className="w-full sm:w-64 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-sm"
+            >
+              <option value="all">All Batches (Master View)</option>
+              {batches.map((b) => (
+                <option key={b._id} value={b._id}>
+                  {b.batchName}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Content */}
       {selectedBatchId === "all" ? renderMasterView() : renderBatchView()}
