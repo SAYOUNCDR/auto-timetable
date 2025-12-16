@@ -1,5 +1,16 @@
 import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { LayoutDashboard, FileText, User, Plus, Users } from "lucide-react";
+import {
+  fetchBatches,
+  addBatch,
+  fetchClassrooms,
+  addClassroom,
+  fetchSubjects,
+  addSubject,
+  fetchFaculty,
+  addFaculty,
+} from "../../services/api";
 import RoomCard from "../../components/cards/RoomCard"; // Importing the separate component
 import BatchCard from "../../components/cards/BatchCard";
 import SubjectCard from "../../components/cards/SubjectCard";
@@ -17,6 +28,8 @@ const DataManagement = () => {
   const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
   const [isFacultyModalOpen, setIsFacultyModalOpen] = useState(false);
 
+  const queryClient = useQueryClient();
+
   // Configuration for tabs
   const tabs = [
     {
@@ -29,118 +42,80 @@ const DataManagement = () => {
     { id: "batches", label: "Batches", icon: <Users size={18} /> },
   ];
 
-  // Dummy Data for Classrooms (In real app, this comes from API)
-  const [rooms, setRooms] = useState([
-    { id: 1, name: "Room 101", capacity: 120, type: "Classroom" },
-    { id: 2, name: "Room 102", capacity: 60, type: "Classroom" },
-    { id: 3, name: "CS Lab 1", capacity: 40, type: "Laboratory" },
-  ]);
+  // --- Classrooms ---
+  const { data: rooms = [], isLoading: loadingRooms } = useQuery({
+    queryKey: ["classrooms"],
+    queryFn: fetchClassrooms,
+    enabled: activeTab === "classrooms",
+  });
 
-  // Dummy Data for Batches
-  const [batches, setBatches] = useState([
-    {
-      id: 1,
-      name: "CS-Sem3-A",
-      students: 55,
-      curriculum: [
-        { name: "Data Structures", hours: 4 },
-        { name: "Database Systems", hours: 3 },
-        { name: "Operating Systems", hours: 3 },
-        { name: "DS Lab", hours: 2 },
-      ],
+  const createRoomMutation = useMutation({
+    mutationFn: addClassroom,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["classrooms"]);
+      setIsRoomModalOpen(false);
     },
-    {
-      id: 2,
-      name: "CS-Sem5-B",
-      students: 48,
-      curriculum: [
-        { name: "Computer Networks", hours: 3 },
-        { name: "Software Eng", hours: 3 },
-        { name: "Web Tech", hours: 4 },
-      ],
-    },
-    {
-      id: 3,
-      name: "IT-Sem3-A",
-      students: 52,
-      curriculum: [
-        { name: "Data Structures", hours: 4 },
-        { name: "Database Systems", hours: 3 },
-        { name: "Operating Systems", hours: 3 },
-      ],
-    },
-  ]);
+  });
 
-  // Dummy Data for Subjects
-  const [subjects, setSubjects] = useState([
-    {
-      id: 1,
-      code: "CS201",
-      name: "Data Structures",
-      sessions: 4,
-      isLab: false,
-    },
-    {
-      id: 2,
-      code: "CS202",
-      name: "Database Systems",
-      sessions: 3,
-      isLab: false,
-    },
-    {
-      id: 3,
-      code: "CS203",
-      name: "Operating Systems",
-      sessions: 3,
-      isLab: false,
-    },
-    { id: 4, code: "CS201L", name: "DS Lab", sessions: 2, isLab: true },
-    { id: 5, code: "CS301", name: "Node", sessions: 4, isLab: false },
-    { id: 6, code: "CS302", name: "React", sessions: 8, isLab: false },
-  ]);
+  // --- Batches ---
+  const { data: batches = [], isLoading: loadingBatches } = useQuery({
+    queryKey: ["batches"],
+    queryFn: fetchBatches,
+    enabled: activeTab === "batches",
+  });
 
-  // Dummy Data for Faculty
-  const [faculty, setFaculty] = useState([
-    {
-      id: 1,
-      name: "Dr. A. Sharma",
-      maxClasses: 3,
-      subjects: ["CS201", "CS201L"],
+  const createBatchMutation = useMutation({
+    mutationFn: addBatch,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["batches"]);
+      setIsBatchModalOpen(false);
     },
-    {
-      id: 2,
-      name: "Prof. B. John",
-      maxClasses: 4,
-      subjects: ["CS202", "CS203"],
+  });
+
+  // --- Subjects ---
+  const { data: subjects = [], isLoading: loadingSubjects } = useQuery({
+    queryKey: ["subjects"],
+    queryFn: fetchSubjects,
+    enabled: activeTab === "subjects",
+  });
+
+  const createSubjectMutation = useMutation({
+    mutationFn: addSubject,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["subjects"]);
+      setIsSubjectModalOpen(false);
     },
-    {
-      id: 3,
-      name: "Dr. C. Gupta",
-      maxClasses: 3,
-      subjects: ["CS203", "CS201L"],
+  });
+
+  // --- Faculty ---
+  const { data: faculty = [], isLoading: loadingFaculty } = useQuery({
+    queryKey: ["faculty"],
+    queryFn: fetchFaculty,
+    enabled: activeTab === "faculty",
+  });
+
+  const createFacultyMutation = useMutation({
+    mutationFn: addFaculty,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["faculty"]);
+      setIsFacultyModalOpen(false);
     },
-    {
-      id: 4,
-      name: "Node Teacher",
-      maxClasses: 4,
-      subjects: ["CS202", "CS203"],
-    },
-  ]);
+  });
 
   const handleAddRoom = (newRoom) => {
-    setRooms([...rooms, { id: rooms.length + 1, ...newRoom }]);
+    createRoomMutation.mutate(newRoom);
   };
 
   const handleAddBatch = (newBatch) => {
-    setBatches([...batches, { id: batches.length + 1, ...newBatch }]);
+    createBatchMutation.mutate(newBatch);
   };
 
   const handleAddSubject = (newSubject) => {
-    setSubjects([...subjects, { id: subjects.length + 1, ...newSubject }]);
+    createSubjectMutation.mutate(newSubject);
   };
 
   const handleAddFaculty = (newFaculty) => {
-    setFaculty([...faculty, { id: faculty.length + 1, ...newFaculty }]);
+    createFacultyMutation.mutate(newFaculty);
   };
 
   return (
@@ -198,39 +173,53 @@ const DataManagement = () => {
           </Button>
         </div>
       </header>
-
       {/* Content Area */}
       <div className="flex-1 overflow-y-auto px-8 pb-8">
         {/* VIEW: Classrooms */}
         {activeTab === "classrooms" && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {rooms.map((room) => (
-              <RoomCard
-                key={room.id}
-                name={room.name}
-                capacity={room.capacity}
-                type={room.type}
-                onTypeChange={(newType) => {
-                  console.log(`Updated ${room.name} to ${newType}`);
-                }}
-                onDelete={() => console.log(`Delete ${room.name}`)}
-              />
-            ))}
+            {loadingRooms ? (
+              <p>Loading classrooms...</p>
+            ) : (
+              rooms.map((room) => (
+                <RoomCard
+                  key={room._id}
+                  name={room.className}
+                  capacity={room.capacity}
+                  type={room.type}
+                  onTypeChange={(newType) => {
+                    console.log(`Updated ${room.className} to ${newType}`);
+                  }}
+                  onDelete={() => console.log(`Delete ${room.className}`)}
+                />
+              ))
+            )}
           </div>
         )}
 
         {/* VIEW: Batches */}
         {activeTab === "batches" && (
           <div className="flex flex-col gap-4">
-            {batches.map((batch) => (
-              <BatchCard
-                key={batch.id}
-                name={batch.name}
-                students={batch.students}
-                curriculum={batch.curriculum}
-                onDelete={() => console.log(`Delete ${batch.name}`)}
-              />
-            ))}
+            {loadingBatches ? (
+              <p>Loading batches...</p>
+            ) : (
+              batches.map((batch) => (
+                <BatchCard
+                  key={batch._id}
+                  name={batch.batchName}
+                  students={batch.strength}
+                  curriculum={
+                    batch.subjects
+                      ? batch.subjects.map((sub) => ({
+                          name: sub.subjectName,
+                          hours: sub.sessionsPerWeek,
+                        }))
+                      : []
+                  }
+                  onDelete={() => console.log(`Delete ${batch.batchName}`)}
+                />
+              ))
+            )}
           </div>
         )}
 
@@ -248,16 +237,22 @@ const DataManagement = () => {
 
             {/* Table Body */}
             <div>
-              {subjects.map((subject) => (
-                <SubjectCard
-                  key={subject.id}
-                  code={subject.code}
-                  name={subject.name}
-                  sessions={subject.sessions}
-                  isLab={subject.isLab}
-                  onDelete={() => console.log(`Delete ${subject.name}`)}
-                />
-              ))}
+              {loadingSubjects ? (
+                <p className="p-4">Loading subjects...</p>
+              ) : (
+                subjects.map((subject) => (
+                  <SubjectCard
+                    key={subject._id}
+                    code={subject.subjectCode}
+                    name={subject.subjectName}
+                    sessions={subject.sessionsPerWeek}
+                    isLab={subject.type === "Practical"}
+                    onDelete={() =>
+                      console.log(`Delete ${subject.subjectName}`)
+                    }
+                  />
+                ))
+              )}
             </div>
           </div>
         )}
@@ -265,19 +260,29 @@ const DataManagement = () => {
         {/* VIEW: Faculty */}
         {activeTab === "faculty" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {faculty.map((fac) => (
-              <FacultyCard
-                key={fac.id}
-                name={fac.name}
-                maxClasses={fac.maxClasses}
-                subjects={fac.subjects}
-                onDelete={() => console.log(`Delete ${fac.name}`)}
-              />
-            ))}
+            {loadingFaculty ? (
+              <p>Loading faculty...</p>
+            ) : (
+              faculty.map((fac) => (
+                <FacultyCard
+                  key={fac._id}
+                  name={fac.name}
+                  maxClasses={fac.maxClassesPerDay}
+                  subjects={
+                    fac.qualifiedSubjects
+                      ? fac.qualifiedSubjects.map((sub) =>
+                          typeof sub === "object" ? sub.subjectName : sub
+                        )
+                      : []
+                  }
+                  onDelete={() => console.log(`Delete ${fac.name}`)}
+                />
+              ))
+            )}
           </div>
         )}
       </div>
-
+      isLoading={createBatchMutation.isPending}
       {/* Modals */}
       <RoomModal
         isOpen={isRoomModalOpen}

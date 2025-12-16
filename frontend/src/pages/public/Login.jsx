@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import for redirection
+import { useAuth } from "../../context/AuthContext";
 
 const Login = ({ isOpen, onClose }) => {
   const navigate = useNavigate(); // Hook for navigation
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -28,34 +30,22 @@ const Login = ({ isOpen, onClose }) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
-      }
-
-      // 1. Save Access Token (In a real app, save to Context, not just console)
-      console.log("Access Token:", data.accessToken);
-      // setAuth({ token: data.accessToken, role: formData.role }); 
-
-      // 2. Close Modal
+      await login(formData);
       onClose();
 
-      // 3. Redirect based on Role
-      if (formData.role === "admin") navigate("/admin/dashboard");
-      else if (formData.role === "faculty") navigate("/faculty/dashboard");
-      else if (formData.role === "student") navigate("/student/dashboard");
-
+      // Redirect based on role
+      if (formData.role === "admin") {
+        navigate("/admin/dashboard");
+      } else if (formData.role === "faculty") {
+        navigate("/faculty/dashboard");
+      } else if (formData.role === "student") {
+        navigate("/student/dashboard");
+      }
     } catch (err) {
-      setError(err.message);
+      setError(
+        err.response?.data?.message ||
+          "Login failed. Please check your credentials."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -71,8 +61,18 @@ const Login = ({ isOpen, onClose }) => {
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-yellow-400 transition-colors duration-200 z-10 cursor-pointer"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 
@@ -145,7 +145,10 @@ const Login = ({ isOpen, onClose }) => {
 
             {/* Forgot Password Link */}
             <div className="flex justify-end">
-              <a href="#" className="text-xs text-gray-400 hover:text-yellow-500 transition-colors">
+              <a
+                href="#"
+                className="text-xs text-gray-400 hover:text-yellow-500 transition-colors"
+              >
                 Forgot Password?
               </a>
             </div>
@@ -163,7 +166,10 @@ const Login = ({ isOpen, onClose }) => {
             <div className="text-center mt-6">
               <p className="text-xs text-gray-400">
                 Don't have an account?{" "}
-                <a href="#" className="text-yellow-500 hover:text-yellow-600 font-medium ml-1">
+                <a
+                  href="#"
+                  className="text-yellow-500 hover:text-yellow-600 font-medium ml-1"
+                >
                   Contact Admin
                 </a>
               </p>

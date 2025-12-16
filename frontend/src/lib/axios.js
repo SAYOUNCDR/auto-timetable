@@ -29,6 +29,11 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // Prevent infinite loop: Don't retry if the failed request was already a refresh attempt
+    if (originalRequest.url.includes("refresh")) {
+      return Promise.reject(error);
+    }
+
     // If 403/401 and not already retried
     if (
       (error.response?.status === 403 || error.response?.status === 401) &&
@@ -39,19 +44,25 @@ api.interceptors.response.use(
       try {
         // Call refresh endpoint (cookie is sent automatically)
         const { data } = await api.post("/auth/refresh");
-        
+
         // Update local variable
         accessToken = data.accessToken;
-        
+
         // Update header
         originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
-        
+
         // Retry
         return api(originalRequest);
       } catch (refreshError) {
         // Refresh failed - user must login again
         accessToken = null;
-        window.location.href = "/"; 
+        // Only redirect if we are not already on the login/landing page to avoid loops
+        if (
+          window.location.pathname !== "/" &&
+          !window.location.pathname.includes("/login")
+        ) {
+          window.location.href = "/";
+        }
         return Promise.reject(refreshError);
       }
     }
