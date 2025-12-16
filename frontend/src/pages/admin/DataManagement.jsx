@@ -10,6 +10,10 @@ import {
   addSubject,
   fetchFaculty,
   addFaculty,
+  deleteBatch,
+  deleteClassroom,
+  deleteSubject,
+  deleteFaculty,
 } from "../../services/api";
 import RoomCard from "../../components/cards/RoomCard"; // Importing the separate component
 import BatchCard from "../../components/cards/BatchCard";
@@ -20,6 +24,7 @@ import RoomModal from "./modals/RoomModal";
 import BatchModal from "./modals/BatchModal";
 import SubjectModal from "./modals/SubjectModal";
 import FacultyModal from "./modals/FacultyModal";
+import ConfirmationModal from "./modals/ConfirmationModal";
 
 const DataManagement = () => {
   const [activeTab, setActiveTab] = useState("classrooms");
@@ -27,6 +32,11 @@ const DataManagement = () => {
   const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
   const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
   const [isFacultyModalOpen, setIsFacultyModalOpen] = useState(false);
+
+  // Delete Modal State
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [deleteType, setDeleteType] = useState(null); // 'classroom', 'batch', 'subject', 'faculty'
 
   const queryClient = useQueryClient();
 
@@ -101,6 +111,59 @@ const DataManagement = () => {
       setIsFacultyModalOpen(false);
     },
   });
+
+  // --- Delete Mutations ---
+  const deleteRoomMutation = useMutation({
+    mutationFn: deleteClassroom,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["classrooms"]);
+      setIsDeleteModalOpen(false);
+    },
+  });
+
+  const deleteBatchMutation = useMutation({
+    mutationFn: deleteBatch,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["batches"]);
+      setIsDeleteModalOpen(false);
+    },
+  });
+
+  const deleteSubjectMutation = useMutation({
+    mutationFn: deleteSubject,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["subjects"]);
+      setIsDeleteModalOpen(false);
+    },
+  });
+
+  const deleteFacultyMutation = useMutation({
+    mutationFn: deleteFaculty,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["faculty"]);
+      setIsDeleteModalOpen(false);
+    },
+  });
+
+  const handleDeleteClick = (item, type) => {
+    setItemToDelete(item);
+    setDeleteType(type);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (!itemToDelete) return;
+
+    if (deleteType === "classroom") {
+      deleteRoomMutation.mutate(itemToDelete._id);
+    } else if (deleteType === "batch") {
+      deleteBatchMutation.mutate(itemToDelete._id);
+    } else if (deleteType === "subject") {
+      deleteSubjectMutation.mutate(itemToDelete._id);
+    } else if (deleteType === "faculty") {
+      deleteFacultyMutation.mutate(itemToDelete._id);
+    }
+  };
 
   const handleAddRoom = (newRoom) => {
     createRoomMutation.mutate(newRoom);
@@ -190,7 +253,7 @@ const DataManagement = () => {
                   onTypeChange={(newType) => {
                     console.log(`Updated ${room.className} to ${newType}`);
                   }}
-                  onDelete={() => console.log(`Delete ${room.className}`)}
+                  onDelete={() => handleDeleteClick(room, "classroom")}
                 />
               ))
             )}
@@ -216,7 +279,7 @@ const DataManagement = () => {
                         }))
                       : []
                   }
-                  onDelete={() => console.log(`Delete ${batch.batchName}`)}
+                  onDelete={() => handleDeleteClick(batch, "batch")}
                 />
               ))
             )}
@@ -247,9 +310,7 @@ const DataManagement = () => {
                     name={subject.subjectName}
                     sessions={subject.sessionsPerWeek}
                     isLab={subject.type === "Practical"}
-                    onDelete={() =>
-                      console.log(`Delete ${subject.subjectName}`)
-                    }
+                    onDelete={() => handleDeleteClick(subject, "subject")}
                   />
                 ))
               )}
@@ -275,7 +336,7 @@ const DataManagement = () => {
                         )
                       : []
                   }
-                  onDelete={() => console.log(`Delete ${fac.name}`)}
+                  onDelete={() => handleDeleteClick(fac, "faculty")}
                 />
               ))
             )}
@@ -302,6 +363,23 @@ const DataManagement = () => {
         isOpen={isFacultyModalOpen}
         onClose={() => setIsFacultyModalOpen(false)}
         onSubmit={handleAddFaculty}
+      />
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+        title={`Delete ${
+          deleteType
+            ? deleteType.charAt(0).toUpperCase() + deleteType.slice(1)
+            : ""
+        }`}
+        message={`Are you sure you want to delete this ${deleteType}? This action cannot be undone.`}
+        isLoading={
+          deleteRoomMutation.isPending ||
+          deleteBatchMutation.isPending ||
+          deleteSubjectMutation.isPending ||
+          deleteFacultyMutation.isPending
+        }
       />
     </div>
   );
