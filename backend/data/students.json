@@ -1,0 +1,74 @@
+[
+    {
+        "name": "Student 1 - Year 1 Sec A",
+        "email": "student.y1a.1@university.edu",
+        "password": "password123",
+        "batchName": "Year 1 - Sec A"
+    },
+    {
+        "name": "Student 2 - Year 1 Sec A",
+        "email": "student.y1a.2@university.edu",
+        "password": "password123",
+        "batchName": "Year 1 - Sec A"
+    },
+    {
+        "name": "Student 1 - Year 1 Sec B",
+        "email": "student.y1b.1@university.edu",
+        "password": "password123",
+        "batchName": "Year 1 - Sec B"
+    },
+    {
+        "name": "Student 2 - Year 1 Sec B",
+        "email": "student.y1b.2@university.edu",
+        "password": "password123",
+        "batchName": "Year 1 - Sec B"
+    },
+    {
+        "name": "Student 1 - Year 2 Sec A",
+        "email": "student.y2a.1@university.edu",
+        "password": "password123",
+        "batchName": "Year 2 - Sec A"
+    },
+    {
+        "name": "Student 2 - Year 2 Sec A",
+        "email": "student.y2a.2@university.edu",
+        "password": "password123",
+        "batchName": "Year 2 - Sec A"
+    },
+    {
+        "name": "Student 1 - Year 2 Sec B",
+        "email": "student.y2b.1@university.edu",
+        "password": "password123",
+        "batchName": "Year 2 - Sec B"
+    },
+    {
+        "name": "Student 2 - Year 2 Sec B",
+        "email": "student.y2b.2@university.edu",
+        "password": "password123",
+        "batchName": "Year 2 - Sec B"
+    },
+    {
+        "name": "Student 1 - Year 3 AI",
+        "email": "student.y3ai.1@university.edu",
+        "password": "password123",
+        "batchName": "Year 3 - AI Specialization"
+    },
+    {
+        "name": "Student 2 - Year 3 AI",
+        "email": "student.y3ai.2@university.edu",
+        "password": "password123",
+        "batchName": "Year 3 - AI Specialization"
+    },
+    {
+        "name": "Student 1 - Year 3 Web",
+        "email": "student.y3web.1@university.edu",
+        "password": "password123",
+        "batchName": "Year 3 - Web Specialization"
+    },
+    {
+        "name": "Student 2 - Year 3 Web",
+        "email": "student.y3web.2@university.edu",
+        "password": "password123",
+        "batchName": "Year 3 - Web Specialization"
+    }
+]

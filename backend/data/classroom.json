@@ -1,0 +1,32 @@
+[
+    {
+        "className": "LH_MAIN_AUD",
+        "capacity": 120,
+        "type": "Classroom"
+    },
+    {
+        "className": "R_201",
+        "capacity": 60,
+        "type": "Classroom"
+    },
+    {
+        "className": "R_202",
+        "capacity": 60,
+        "type": "Classroom"
+    },
+    {
+        "className": "R_203",
+        "capacity": 45,
+        "type": "Classroom"
+    },
+    {
+        "className": "LAB_COMP_A",
+        "capacity": 60,
+        "type": "Laboratory"
+    },
+    {
+        "className": "LAB_COMP_B",
+        "capacity": 40,
+        "type": "Laboratory"
+    }
+]

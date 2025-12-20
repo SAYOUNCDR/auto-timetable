@@ -1,0 +1,32 @@
+[
+    {
+        "batchName": "Year 1 - Sec A",
+        "strength": 55,
+        "yearOfStudy": 1
+    },
+    {
+        "batchName": "Year 1 - Sec B",
+        "strength": 58,
+        "yearOfStudy": 1
+    },
+    {
+        "batchName": "Year 2 - Sec A",
+        "strength": 50,
+        "yearOfStudy": 2
+    },
+    {
+        "batchName": "Year 2 - Sec B",
+        "strength": 52,
+        "yearOfStudy": 2
+    },
+    {
+        "batchName": "Year 3 - AI Specialization",
+        "strength": 40,
+        "yearOfStudy": 3
+    },
+    {
+        "batchName": "Year 3 - Web Specialization",
+        "strength": 45,
+        "yearOfStudy": 3
+    }
+]

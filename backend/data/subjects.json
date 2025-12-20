@@ -1,0 +1,202 @@
+[
+    {
+        "subjectCode": "MATH_101_Y1A",
+        "subjectName": "Calculus I",
+        "sessionsPerWeek": 4,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 1 - Sec A"
+    },
+    {
+        "subjectCode": "CS_101_Y1A",
+        "subjectName": "Intro to CS",
+        "sessionsPerWeek": 3,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 1 - Sec A"
+    },
+    {
+        "subjectCode": "CS_101_LAB_Y1A",
+        "subjectName": "Intro CS Lab",
+        "sessionsPerWeek": 1,
+        "type": "Practical",
+        "requiredRoomType": "Laboratory",
+        "batchName": "Year 1 - Sec A"
+    },
+    {
+        "subjectCode": "PYTHON_102_Y1A",
+        "subjectName": "Python Basics",
+        "sessionsPerWeek": 2,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 1 - Sec A"
+    },
+    {
+        "subjectCode": "MATH_101_Y1B",
+        "subjectName": "Calculus I",
+        "sessionsPerWeek": 4,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 1 - Sec B"
+    },
+    {
+        "subjectCode": "CS_101_Y1B",
+        "subjectName": "Intro to CS",
+        "sessionsPerWeek": 3,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 1 - Sec B"
+    },
+    {
+        "subjectCode": "CS_101_LAB_Y1B",
+        "subjectName": "Intro CS Lab",
+        "sessionsPerWeek": 1,
+        "type": "Practical",
+        "requiredRoomType": "Laboratory",
+        "batchName": "Year 1 - Sec B"
+    },
+    {
+        "subjectCode": "PYTHON_102_Y1B",
+        "subjectName": "Python Basics",
+        "sessionsPerWeek": 2,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 1 - Sec B"
+    },
+    {
+        "subjectCode": "DSA_201_Y2A",
+        "subjectName": "Data Structures & Algo",
+        "sessionsPerWeek": 3,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 2 - Sec A"
+    },
+    {
+        "subjectCode": "DSA_201_LAB_Y2A",
+        "subjectName": "DSA Lab",
+        "sessionsPerWeek": 1,
+        "type": "Practical",
+        "requiredRoomType": "Laboratory",
+        "batchName": "Year 2 - Sec A"
+    },
+    {
+        "subjectCode": "DB_202_Y2A",
+        "subjectName": "DBMS",
+        "sessionsPerWeek": 3,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 2 - Sec A"
+    },
+    {
+        "subjectCode": "DB_202_LAB_Y2A",
+        "subjectName": "DBMS Lab",
+        "sessionsPerWeek": 1,
+        "type": "Practical",
+        "requiredRoomType": "Laboratory",
+        "batchName": "Year 2 - Sec A"
+    },
+    {
+        "subjectCode": "DISCRETE_MATH_Y2A",
+        "subjectName": "Discrete Structures",
+        "sessionsPerWeek": 3,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 2 - Sec A"
+    },
+    {
+        "subjectCode": "DSA_201_Y2B",
+        "subjectName": "Data Structures & Algo",
+        "sessionsPerWeek": 3,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 2 - Sec B"
+    },
+    {
+        "subjectCode": "DSA_201_LAB_Y2B",
+        "subjectName": "DSA Lab",
+        "sessionsPerWeek": 1,
+        "type": "Practical",
+        "requiredRoomType": "Laboratory",
+        "batchName": "Year 2 - Sec B"
+    },
+    {
+        "subjectCode": "DB_202_Y2B",
+        "subjectName": "DBMS",
+        "sessionsPerWeek": 3,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 2 - Sec B"
+    },
+    {
+        "subjectCode": "DB_202_LAB_Y2B",
+        "subjectName": "DBMS Lab",
+        "sessionsPerWeek": 1,
+        "type": "Practical",
+        "requiredRoomType": "Laboratory",
+        "batchName": "Year 2 - Sec B"
+    },
+    {
+        "subjectCode": "DISCRETE_MATH_Y2B",
+        "subjectName": "Discrete Structures",
+        "sessionsPerWeek": 3,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 2 - Sec B"
+    },
+    {
+        "subjectCode": "AI_401_Y3AI",
+        "subjectName": "Artificial Intelligence",
+        "sessionsPerWeek": 3,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 3 - AI Specialization"
+    },
+    {
+        "subjectCode": "AI_401_LAB_Y3AI",
+        "subjectName": "Neural Networks Lab",
+        "sessionsPerWeek": 1,
+        "type": "Practical",
+        "requiredRoomType": "Laboratory",
+        "batchName": "Year 3 - AI Specialization"
+    },
+    {
+        "subjectCode": "OS_301_Y3AI",
+        "subjectName": "Operating Systems",
+        "sessionsPerWeek": 3,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 3 - AI Specialization"
+    },
+    {
+        "subjectCode": "OS_301_LAB_Y3AI",
+        "subjectName": "Linux Kernel Lab",
+        "sessionsPerWeek": 1,
+        "type": "Practical",
+        "requiredRoomType": "Laboratory",
+        "batchName": "Year 3 - AI Specialization"
+    },
+    {
+        "subjectCode": "WEB_302_Y3WEB",
+        "subjectName": "Full Stack Dev",
+        "sessionsPerWeek": 2,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 3 - Web Specialization"
+    },
+    {
+        "subjectCode": "WEB_302_LAB_Y3WEB",
+        "subjectName": "React/Node Lab",
+        "sessionsPerWeek": 1,
+        "type": "Practical",
+        "requiredRoomType": "Laboratory",
+        "batchName": "Year 3 - Web Specialization"
+    },
+    {
+        "subjectCode": "NET_305_Y3WEB",
+        "subjectName": "Computer Networks",
+        "sessionsPerWeek": 4,
+        "type": "Theory",
+        "requiredRoomType": "Classroom",
+        "batchName": "Year 3 - Web Specialization"
+    }
+]

@@ -1,0 +1,215 @@
+[
+    {
+        "name": "Dr. Alan (Math/Logic)",
+        "email": "t_alan@university.edu",
+        "password": "password123",
+        "maxClassesPerDay": 6,
+        "qualifiedSubjectCodes": [
+            "MATH_101_Y1A",
+            "MATH_101_Y1B",
+            "DISCRETE_MATH_Y2A",
+            "DISCRETE_MATH_Y2B"
+        ],
+        "unavailableTimeSlots": []
+    },
+    {
+        "name": "Prof. Grace (Core CS)",
+        "email": "t_grace@university.edu",
+        "password": "password123",
+        "maxClassesPerDay": 6,
+        "qualifiedSubjectCodes": [
+            "CS_101_Y1A",
+            "CS_101_LAB_Y1A",
+            "CS_101_Y1B",
+            "CS_101_LAB_Y1B",
+            "DSA_201_Y2B"
+        ],
+        "unavailableTimeSlots": [
+            [
+                0,
+                0
+            ],
+            [
+                0,
+                1
+            ],
+            [
+                4,
+                6
+            ],
+            [
+                4,
+                7
+            ]
+        ]
+    },
+    {
+        "name": "Prof. Linus (OS/Sys)",
+        "email": "t_linus@university.edu",
+        "password": "password123",
+        "maxClassesPerDay": 6,
+        "qualifiedSubjectCodes": [
+            "OS_301_Y3AI",
+            "OS_301_LAB_Y3AI",
+            "DSA_201_Y2A",
+            "DSA_201_LAB_Y2A"
+        ],
+        "unavailableTimeSlots": [
+            [
+                2,
+                0
+            ],
+            [
+                2,
+                1
+            ],
+            [
+                2,
+                2
+            ],
+            [
+                2,
+                3
+            ]
+        ]
+    },
+    {
+        "name": "Dr. Ada (AI/ML)",
+        "email": "t_ada@university.edu",
+        "password": "password123",
+        "maxClassesPerDay": 6,
+        "qualifiedSubjectCodes": [
+            "AI_401_Y3AI",
+            "AI_401_LAB_Y3AI",
+            "PYTHON_102_Y1A",
+            "PYTHON_102_Y1B"
+        ],
+        "unavailableTimeSlots": [
+            [
+                1,
+                0
+            ],
+            [
+                3,
+                0
+            ],
+            [
+                4,
+                0
+            ]
+        ]
+    },
+    {
+        "name": "Mr. Tim (Web - Visiting)",
+        "email": "t_tim@university.edu",
+        "password": "password123",
+        "maxClassesPerDay": 6,
+        "qualifiedSubjectCodes": [
+            "WEB_302_Y3WEB",
+            "WEB_302_LAB_Y3WEB"
+        ],
+        "unavailableTimeSlots": [
+            [
+                0,
+                0
+            ],
+            [
+                0,
+                1
+            ],
+            [
+                0,
+                2
+            ],
+            [
+                0,
+                3
+            ],
+            [
+                1,
+                0
+            ],
+            [
+                1,
+                1
+            ],
+            [
+                1,
+                2
+            ],
+            [
+                1,
+                3
+            ],
+            [
+                2,
+                0
+            ],
+            [
+                2,
+                1
+            ],
+            [
+                2,
+                2
+            ],
+            [
+                2,
+                3
+            ]
+        ]
+    },
+    {
+        "name": "Prof. Bob (Database)",
+        "email": "t_bob@university.edu",
+        "password": "password123",
+        "maxClassesPerDay": 6,
+        "qualifiedSubjectCodes": [
+            "DB_202_Y2A",
+            "DB_202_LAB_Y2A",
+            "DB_202_Y2B",
+            "DB_202_LAB_Y2B"
+        ],
+        "unavailableTimeSlots": []
+    },
+    {
+        "name": "Sarah (Teaching Asst)",
+        "email": "t_sarah@university.edu",
+        "password": "password123",
+        "maxClassesPerDay": 6,
+        "qualifiedSubjectCodes": [
+            "CS_101_LAB_Y1A",
+            "CS_101_LAB_Y1B",
+            "DSA_201_LAB_Y2A",
+            "DSA_201_LAB_Y2B"
+        ],
+        "unavailableTimeSlots": [
+            [
+                0,
+                4
+            ],
+            [
+                0,
+                5
+            ],
+            [
+                0,
+                6
+            ],
+            [
+                0,
+                7
+            ]
+        ]
+    },
+    {
+        "name": "Ken (Networks)",
+        "email": "t_ken@university.edu",
+        "password": "password123",
+        "maxClassesPerDay": 6,
+        "qualifiedSubjectCodes": [
+            "NET_305_Y3WEB"
+        ],
+        "unavailableTimeSlots": []
+    }
+]
