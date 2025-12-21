@@ -2,6 +2,31 @@
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white) ![Express](https://img.shields.io/badge/Express-000000?logo=express&logoColor=white) ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white) ![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black) ![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white) ![npm](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=white)
 
+## Landing page
+<img width="1308" height="677" alt="image" src="https://github.com/user-attachments/assets/7231f9c7-e979-4566-8b92-a16065fe8de9" />
+
+
+
+## Admin View
+
+<img width="3600" height="2025" alt="LogTime" src="https://github.com/user-attachments/assets/7ba7dbeb-8138-4d05-a571-cc5708345326" />
+
+<img width="3600" height="2025" alt="AdminDashboard" src="https://github.com/user-attachments/assets/ea3338da-5f4d-43e4-ba4e-53e1ea632562" />
+
+<img width="3600" height="2025" alt="Datamanagement" src="https://github.com/user-attachments/assets/74470195-b2e5-4151-b995-0fa861b028e7" />
+
+<img width="3600" height="2025" alt="Generator" src="https://github.com/user-attachments/assets/154c7208-eb45-4945-8624-37ac56f4bc0a" />
+
+<img width="3600" height="2025" alt="Timet" src="https://github.com/user-attachments/assets/f140e2a5-a150-41ad-8b57-05ad7266c1ae" />
+
+## Faculty View
+<img width="1322" height="673" alt="image" src="https://github.com/user-attachments/assets/9743a986-db22-4e8c-bf4a-cdc294d9ece5" />
+
+## Student View
+<img width="1323" height="677" alt="image" src="https://github.com/user-attachments/assets/04fdc96c-5b62-4906-a3c5-483121ad0c5e" />
+
+
+
 ## 📚 Documentation
 
 ### Project Visual Guide
